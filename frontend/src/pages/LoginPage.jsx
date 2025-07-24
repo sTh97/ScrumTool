@@ -9,15 +9,28 @@ const LoginPage = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     await login(email, password);
+  //     navigate("/dashboard");
+  //   } catch (err) {
+  //     setError("Invalid credentials");
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await login(email, password);
-      navigate("/dashboard");
-    } catch (err) {
-      setError("Invalid credentials");
-    }
-  };
+  e.preventDefault();
+  try {
+    const user = await login(email, password);
+    localStorage.setItem("userId", user._id); // This now works
+    navigate("/dashboard");
+  } catch (err) {
+    setError("Invalid credentials");
+  }
+};
+
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

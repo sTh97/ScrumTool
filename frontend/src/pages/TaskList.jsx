@@ -22,11 +22,6 @@ const TaskList = () => {
     const fetchTasks = async () => {
       try {
         const res = await axios.get("/tasks");
-        // const isAdminOrManager = currentUser?.roles?.some(role => ["Admin", "Management"].includes(role));
-        // const filtered = isAdminOrManager
-        //   ? res.data
-        //   : res.data.filter(task => task.assignedTo?._id === currentUser?._id || task.assignedTo === currentUser?._id);
-        // setTasks(filtered);
         const roles = currentUser?.roles || [];
         const roleNames = Array.isArray(roles) ? roles.map(r => typeof r === "string" ? r : r.name) : [];
 
@@ -69,8 +64,8 @@ const TaskList = () => {
   const getStatusOptions = (current) => {
     const map = {
       "To Do": ["To Do", "In Progress"],
-      "In Progress": ["In Progress", "Blocked", "Done"],
-      "Blocked": ["Blocked", "In Progress"],
+      "In Progress": ["In Progress", "Paused", "Done"],
+      "Paused": ["Paused", "In Progress"],
       "Done": ["Done"]
     };
     return map[current] || ["To Do"];
@@ -96,7 +91,7 @@ const TaskList = () => {
             <div
               key={task._id}
               className={`grid grid-cols-7 text-sm py-2 border-b items-center
-                ${task.status === "Blocked" ? "bg-red-50" :
+                ${task.status === "Paused" ? "bg-red-50" :
                   task.status === "Done" ? "bg-green-50" :
                   task.status === "In Progress" ? "bg-yellow-50" : ""}
               `}
