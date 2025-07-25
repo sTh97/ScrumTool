@@ -227,15 +227,27 @@ const handleSendChat = async (taskId, storyId) => {
 
                 {tasksByStory[story.storyId._id]?.length > 0 ? (
                   <div className="grid grid-cols-7 gap-2 text-sm mt-2">
-                    <div className="font-semibold">Title</div>
+                    {/* <div className="font-semibold">Title</div>
                     <div className="font-semibold">Description</div>
                     <div className="font-semibold">Assigned</div>
                     <div className="font-semibold">Est. Hrs</div>
                     <div className="font-semibold">Act. Hrs</div>
                     <div className="font-semibold">Status</div>
-                    <div className="font-semibold">Actions</div>
+                    <div className="font-semibold">Actions</div> */}
                     {tasksByStory[story.storyId._id].map((task, index) => (
                     <React.Fragment key={task._id}>
+
+                       {/* ✅ Header for each task */}
+                    <div className="col-span-7 grid grid-cols-7 gap-2 mt-4 text-sm bg-gray-100 px-2 py-1 rounded">
+                      <div className="font-semibold">Title</div>
+                      <div className="font-semibold">Description</div>
+                      <div className="font-semibold">Assigned</div>
+                      <div className="font-semibold">Est. Hrs</div>
+                      <div className="font-semibold">Act. Hrs</div>
+                      <div className="font-semibold">Status</div>
+                      <div className="font-semibold">Actions</div>
+                    </div> 
+
                       <div>{task.title}</div>
                       <div>{task.description}</div>
                       <div>{task.assignedTo?.name}</div>
@@ -255,27 +267,34 @@ const handleSendChat = async (taskId, storyId) => {
 
                       {task.changeLog?.length > 0 && (
                         <div className="col-span-7 mt-2 px-3 py-2 bg-yellow-50 border rounded text-xs text-gray-800">
-                          <p className="font-semibold text-gray-700 mb-1">📜 Change Log</p>
-                          <ul className="list-disc pl-5 space-y-1">
-                            {task.changeLog.map((log, index) => (
-                              <li key={index}>
-                                <span className="text-blue-600 font-semibold">{log.field}</span>{" "}
-                                changed from{" "}
-                                <span className="text-red-600 italic">
-                                  {renderValue(log.field, log.oldValue)}
-                                </span>{" "}
-                                to{" "}
-                                <span className="text-green-600 italic">
-                                  {renderValue(log.field, log.newValue)}
-                                </span>{" "}
-                                <span className="text-gray-500 text-[11px] ml-1">
-                                  ({new Date(log.changedAt).toLocaleString()})
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
+                          <p className="font-bold text-gray-700 mb-1">Change Log</p>
+                          <div className="max-h-40 overflow-y-auto pr-2">
+                            <ul className="list-disc pl-5 space-y-1">
+                              {[...task.changeLog].reverse().map((log, index) => (
+                                <li key={index}>
+                                  <span className="text-blue-600 font-semibold">{log.field}</span>{" "}
+                                  changed from{" "}
+                                  <span className="text-red-600 italic">
+                                    {renderValue(log.field, log.oldValue)}
+                                  </span>{" "}
+                                  to{" "}
+                                  <span className="text-green-600 italic">
+                                    {renderValue(log.field, log.newValue)}
+                                  </span>{" "}
+                                  by{" "}
+                                  <span className="text-purple-600 font-medium">
+                                    {resolveUserName(log.changedBy)}
+                                  </span>{" "}
+                                  <span className="text-gray-500 text-[11px] ml-1">
+                                    ({new Date(log.changedAt).toLocaleString()})
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
                       )}
+
 
 
                       {/* ✅ Status & Time Logs */}
@@ -299,7 +318,7 @@ const handleSendChat = async (taskId, storyId) => {
                       </div> */}
 
                       {/* ✅ Chat section */}
-                      <div className="col-span-7 bg-gray-50 p-2 rounded border mt-2">
+                      {/* <div className="col-span-7 bg-gray-50 p-2 rounded border mt-2">
                         <p className="font-semibold text-sm text-gray-800 mb-1">💬 Chat History</p>
                         <ul className="pl-3 text-xs text-gray-700 space-y-1 max-h-40 overflow-y-auto">
                           {(task.chatHistory?.length > 0 ? task.chatHistory : []).map((msg, idx) => (
@@ -324,7 +343,43 @@ const handleSendChat = async (taskId, storyId) => {
                             Send
                           </button>
                         </div>
+                      </div> */}
+
+                      <div className="col-span-7 bg-gray-50 p-2 rounded border mt-2">
+                        <p className="font-bold text-sm text-gray-800 mb-1">Chat History</p>
+
+                        <ul className="pl-3 text-xs text-gray-800 space-y-2 max-h-40 overflow-y-auto pr-2">
+                          {[...(task.chatHistory || [])].reverse().map((msg, idx) => (
+                            <li key={idx} className="bg-white rounded px-3 py-2 border shadow-sm">
+                              <div className="flex items-center justify-between">
+                                <span className="text-blue-700 font-semibold">{msg.addedBy?.name || 'User'}</span>
+                                <span className="text-gray-400 text-[11px]">
+                                  {new Date(msg.timestamp).toLocaleString()}
+                                </span>
+                              </div>
+                              <div className="text-gray-700 mt-1">{msg.message}</div>
+                            </li>
+                          ))}
+                        </ul>
+
+                        <div className="flex items-center gap-2 mt-3">
+                          <input
+                            type="text"
+                            placeholder="Type a message..."
+                            value={chatInputs[task._id] || ""}
+                            onChange={(e) => handleChatInputChange(task._id, e.target.value)}
+                            className="flex-1 border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-400"
+                          />
+                          <button
+                            onClick={() => handleSendChat(task._id, story.storyId._id)}
+                            className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded"
+                          >
+                            Send
+                          </button>
+                        </div>
                       </div>
+
+
                       
                     </React.Fragment>
                   ))}
@@ -340,7 +395,7 @@ const handleSendChat = async (taskId, storyId) => {
       </div>
 
       {/* Your modals for create/edit are unchanged */}
-           {showTaskModal && (
+        {showTaskModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg w-full max-w-md">
             <h3 className="text-lg font-bold mb-4">Add Task</h3>
@@ -450,8 +505,11 @@ const handleSendChat = async (taskId, storyId) => {
                     className="border p-2 w-full mb-2 rounded"
                   >
                     <option value="">-- Select User --</option>
-                    {allUsers.map((user) => (
-                      <option key={user._id} value={user._id}>{user.name}</option>
+                    {
+                    // allUsers.map((user) => (
+                    //   <option key={user._id} value={user._id}>{user.name}</option>
+                     sprint?.teamMembers?.map((member) => (
+                     <option key={member._id} value={member._id}>{member.name}</option>
                     ))}
                   </select>
                   <label className="block mb-1">Status</label>
