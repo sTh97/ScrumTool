@@ -115,6 +115,23 @@ const handleSendChat = async (taskId, storyId) => {
     return value.toString();
   };
 
+  const formatDuration = (from, to) => {
+    if (!from || !to) return "";
+    const diff = new Date(to) - new Date(from); // in milliseconds
+    const totalSeconds = Math.floor(diff / 1000);
+
+    const hours = Math.floor(totalSeconds / 3600)
+      .toString()
+      .padStart(2, "0");
+    const minutes = Math.floor((totalSeconds % 3600) / 60)
+      .toString()
+      .padStart(2, "0");
+    const seconds = (totalSeconds % 60).toString().padStart(2, "0");
+
+    return `${hours}:${minutes}:${seconds}`;
+  };
+
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h2 className="text-3xl font-bold mb-6 text-blue-700">Sprint Details</h2>
@@ -298,52 +315,68 @@ const handleSendChat = async (taskId, storyId) => {
 
 
                       {/* ✅ Status & Time Logs */}
-                      {/* <div className="col-span-7 text-xs text-gray-600 pl-4 pb-3">
-                        <p className="font-semibold">Status Log:</p>
+                      <div className="col-span-7 text-xs text-gray-600 pl-4 pb-3">
+                        {/* <p className="font-semibold">Status Log:</p>
                         <ul className="list-disc pl-5">
                           {task.statusChangeLog?.length > 0
                             ? task.statusChangeLog.map((log, i) => (
                                 <li key={i}>{log.status} @ {new Date(log.changedAt).toLocaleString()}</li>
                               ))
                             : <li>No status changes</li>}
-                        </ul>
-                        <p className="font-semibold mt-1">Active Sessions:</p>
-                        <ul className="list-disc pl-5">
+                        </ul> */}
+                        <p className="font-bold mt-1">Active Sessions:</p>
+                        {/* <ul className="list-disc pl-5">
                           {task.activeSessions?.length > 0
                             ? task.activeSessions.map((s, i) => (
                                 <li key={i}>From {new Date(s.from).toLocaleString()} to {new Date(s.to).toLocaleString()}</li>
                               ))
                             : <li>No tracked sessions</li>}
-                        </ul>
-                      </div> */}
+                        </ul> */}
+                        {task.activeSessions?.length > 0 ? (
+                            <div className="col-span-7 mt-2 px-3 py-2 bg-indigo-50 border rounded text-xs text-gray-800">
+                              {/* <p className="font-bold text-gray-700 mb-1">Active Sessions</p> */}
+                              <div className="max-h-40 overflow-y-auto pr-2">
+                                <ul className="list-disc pl-5 space-y-1">
+                                  {task.activeSessions.map((s, i) => (
+                                    // <li key={i}>
+                                    //   <span className="text-blue-700 font-semibold">From</span>{" "}
+                                    //   <span className="text-gray-800">{new Date(s.from).toLocaleString()}</span>{" "}
+                                    //   <span className="text-blue-700 font-semibold">to</span>{" "}
+                                    //   <span className="text-gray-800">
+                                    //     {s.to ? new Date(s.to).toLocaleString() : "Ongoing"}
+                                    //   </span>
+                                    // </li>
+                                    <li key={i}>
+                                      <span className="text-blue-700 font-semibold">From</span>{" "}
+                                      <span className="text-gray-800">{new Date(s.from).toLocaleString()}</span>{" "}
+                                      <span className="text-blue-700 font-semibold">to</span>{" "}
+                                      <span className="text-gray-800">
+                                        {s.to ? new Date(s.to).toLocaleString() : "Ongoing"}
+                                      </span>
+                                      {s.to && (
+                                        <>
+                                          {" "}
+                                          <span className="text-purple-700 font-semibold ml-2">Duration:</span>{" "}
+                                          <span className="text-purple-800 font-mono">
+                                            {formatDuration(s.from, s.to)}
+                                          </span>
+                                        </>
+                                      )}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="col-span-7 mt-2 px-3 py-2 bg-yellow-50 border rounded text-xs text-gray-800">
+                              <p className="font-bold text-gray-700 mb-1">Active Sessions</p>
+                              <p className="text-gray-600 italic">No tracked sessions</p>
+                            </div>
+                          )}
+
+                      </div>
 
                       {/* ✅ Chat section */}
-                      {/* <div className="col-span-7 bg-gray-50 p-2 rounded border mt-2">
-                        <p className="font-semibold text-sm text-gray-800 mb-1">💬 Chat History</p>
-                        <ul className="pl-3 text-xs text-gray-700 space-y-1 max-h-40 overflow-y-auto">
-                          {(task.chatHistory?.length > 0 ? task.chatHistory : []).map((msg, idx) => (
-                            <li key={idx}>
-                              <span className="font-semibold">{msg.addedBy?.name || 'User'}</span>: {msg.message}
-                              <span className="text-gray-500 text-[11px] ml-2">({new Date(msg.timestamp).toLocaleString()})</span>
-                            </li>
-                          ))}
-                        </ul>
-                        <div className="flex items-center gap-2 mt-2">
-                          <input
-                            type="text"
-                            placeholder="Type a message..."
-                            value={chatInputs[task._id] || ""}
-                            onChange={(e) => handleChatInputChange(task._id, e.target.value)}
-                            className="flex-1 border rounded px-2 py-1 text-xs"
-                          />
-                          <button
-                            onClick={() => handleSendChat(task._id, story.storyId._id)}
-                            className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded"
-                          >
-                            Send
-                          </button>
-                        </div>
-                      </div> */}
 
                       <div className="col-span-7 bg-gray-50 p-2 rounded border mt-2">
                         <p className="font-bold text-sm text-gray-800 mb-1">Chat History</p>

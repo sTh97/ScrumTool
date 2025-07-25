@@ -61,6 +61,23 @@ exports.createTask = async (req, res) => {
 
 
 // READ ALL (Optional filter: sprintId, userStoryId)
+// exports.getAllTasks = async (req, res) => {
+//   try {
+//     const { sprintId, userStoryId } = req.query;
+//     const filter = {};
+//     if (sprintId) filter.sprintId = sprintId;
+//     if (userStoryId) filter.userStoryId = userStoryId;
+
+//     // const tasks = await Task.find(filter).populate("assignedTo");
+//     const tasks = await Task.find(filter)
+//     .populate("assignedTo", "name email")
+//     .populate("chatHistory.addedBy", "name");
+//     res.json(tasks);
+//   } catch (err) {
+//     res.status(500).json({ message: "Failed to fetch tasks", error: err.message });
+//   }
+// };
+
 exports.getAllTasks = async (req, res) => {
   try {
     const { sprintId, userStoryId } = req.query;
@@ -71,7 +88,19 @@ exports.getAllTasks = async (req, res) => {
     // const tasks = await Task.find(filter).populate("assignedTo");
     const tasks = await Task.find(filter)
     .populate("assignedTo", "name email")
-    .populate("chatHistory.addedBy", "name");
+    .populate("chatHistory.addedBy", "name")
+    .populate({
+        path: "sprintId",
+        select: "name epic",
+        populate: {
+          path: "epic",
+          select: "name project",
+          populate: {
+            path: "project",
+            select: "name"
+          }
+        }
+      });
     res.json(tasks);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch tasks", error: err.message });
