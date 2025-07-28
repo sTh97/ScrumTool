@@ -14,6 +14,15 @@ import SprintAssignment from "./pages/SprintAssignment";
 import SprintDetailsView from "./pages/SprintDetailsView";
 import SprintDetails from "./pages/SprintDetails";
 import TaskList from "./pages/TaskList";
+import PhaseStageMaster from "./pages/LessonLearnedMasters/PhaseStageMaster"
+import ImpactMaster from "./pages/LessonLearnedMasters/ImpactMaster"
+import LessonsLearnedMaster from "./pages/LessonLearnedMasters/LessonsLearnedMaster"
+import RecommendationsMaster from "./pages/LessonLearnedMasters/RecommendationsMaster"
+import PrioritySeverityMaster from "./pages/LessonLearnedMasters/PrioritySeverityMaster"
+import FrequencyMaster from "./pages/LessonLearnedMasters/FrequencyMaster"
+import LessonLearnedForm from "./pages/LessonLearnedRegister"
+import LessonLearnedList from "./pages/LessonLearnedList"
+import LessonEditPage from "./pages/LessonEditPage"
 import Layout from "./components/Layout";
 
 const App = () => {
@@ -128,6 +137,87 @@ const App = () => {
       element={
         <ProtectedRoute>
           <Layout><TaskList /></Layout>
+        </ProtectedRoute>
+      }
+    />
+
+      <Route
+      path="/PhaseStageMaster"
+      element={
+        <ProtectedRoute>
+          <Layout><PhaseStageMaster /></Layout>
+        </ProtectedRoute>
+      }
+    />
+
+    <Route
+      path="/ImpactMaster"
+      element={
+        <ProtectedRoute>
+          <Layout><ImpactMaster /></Layout>
+        </ProtectedRoute>
+      }
+    />
+
+      <Route
+      path="/LessonsLearnedMaster"
+      element={
+        <ProtectedRoute>
+          <Layout><LessonsLearnedMaster /></Layout>
+        </ProtectedRoute>
+      }
+    />
+    
+    <Route
+      path="/RecommendationsMaster"
+      element={
+        <ProtectedRoute>
+          <Layout><RecommendationsMaster /></Layout>
+        </ProtectedRoute>
+      }
+    />
+
+    <Route
+      path="/PrioritySeverityMaster"
+      element={
+        <ProtectedRoute>
+          <Layout><PrioritySeverityMaster /></Layout>
+        </ProtectedRoute>
+      }
+    />
+
+    <Route
+      path="/FrequencyMaster"
+      element={
+        <ProtectedRoute>
+          <Layout><FrequencyMaster /></Layout>
+        </ProtectedRoute>
+      }
+    />
+
+    <Route
+      path="/LessonLearnedForm"
+      element={
+        <ProtectedRoute>
+          <Layout><LessonLearnedForm /></Layout>
+        </ProtectedRoute>
+      }
+    />
+
+    <Route
+      path="/LessonLearnedList"
+      element={
+        <ProtectedRoute>
+          <Layout><LessonLearnedList /></Layout>
+        </ProtectedRoute>
+      }
+    />
+
+    <Route
+      path="/LessonEditPage/edit/:id"
+      element={
+        <ProtectedRoute>
+          <Layout><LessonEditPage /></Layout>
         </ProtectedRoute>
       }
     />

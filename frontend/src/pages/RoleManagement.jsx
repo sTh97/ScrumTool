@@ -190,6 +190,14 @@ const permissionOptions = [
   { label: "Manage Sprint Assignment", value: "manage_sprintassignment" },
   { label: "Manage Sprint Detail View", value: "manage_sprintdetailview" },
   { label: "Manage Tasks", value: "manage_tasks" },
+  { label: "Manage Stage Phase", value: "phase_stage_master" },
+  { label: "Manage Impacts/Consequences", value: "impact_master" },
+  { label: "Manage Lessons Learned", value: "lessons_learned_master" },
+  { label: "Manage Recommendations", value: "recommendations_master" },
+  { label: "Manage Lessons Leraned Priority/Severity", value: "priority_severity_master" },
+  { label: "Manage Frequency", value: "frequency_master" },
+  { label: "Lesson Learn Register", value: "lesson_learned" },
+  { label: "Lesson Learn List", value: "lesson_learned_List" },
 ];
 
 const RoleManagement = () => {

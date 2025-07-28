@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
@@ -13,6 +14,18 @@ const estimationRoutes = require("./routes/estimationRoutes");
 const userStoryRoutes = require("./routes/userStoryRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const taskRoutes = require("./routes/taskRoutes");
+const phaseStageRoutes = require("./routes/phaseStageRoutes")
+const impactRoutes = require("./routes/impactRoutes");
+const lessonsLearnedRoutes = require("./routes/lessonsLearnedMasterRoutes");
+const recommendationsRoutes = require("./routes/recommendationsMasterRoutes");
+const prioritySeverityRoutes = require("./routes/prioritySeverityRoutes");
+const frequencyRoutes = require("./routes/frequencyRoutes");
+const lessonLearnedRoutes = require("./routes/lessonLearnedRoutes");
+
+
+
+
+
 
 dotenv.config();
 const app = express();
@@ -32,6 +45,16 @@ app.use("/api/sprints", sprintRoutes);
 app.use("/api/estimations", estimationRoutes);
 app.use("/api/userstories", userStoryRoutes);
 app.use("/api/tasks", taskRoutes);
+app.use("/api/phase-stage", phaseStageRoutes);
+app.use("/api/impact", impactRoutes);
+app.use("/api/lessons-learned", lessonsLearnedRoutes);
+app.use("/api/recommendations", recommendationsRoutes);
+app.use("/api/priority-severity", prioritySeverityRoutes);
+app.use("/api/frequency", frequencyRoutes);
+app.use("/api/lesson-learned", lessonLearnedRoutes);
+// app.use("/uploads", express.static("uploads"));
+app.use("/uploads/lesson-files", express.static(path.join(__dirname, "uploads/lesson-files")));
+
 
 // DB Connection
 mongoose
