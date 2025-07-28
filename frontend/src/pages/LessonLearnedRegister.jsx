@@ -524,7 +524,7 @@ const LessonLearnedForm = () => {
 
   return (
     <div className="p-6 max-w-5xl mx-auto text-sm">
-      <h2 className="text-xl font-bold text-blue-700 mb-4">📘 Lesson Learned Register</h2>
+      <h2 className="text-xl font-bold text-blue-700 mb-4">Lesson Learned Register</h2>
 
       <div className="grid grid-cols-2 gap-4">
         <div>
