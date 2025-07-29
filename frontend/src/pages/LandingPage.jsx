@@ -47,6 +47,7 @@ const LandingPage = () => {
     "Assign & Estimate",
     "Track Tasks",
     "Log Lessons Learned",
+    ""
   ];
 
   const benefits = [
