@@ -49,9 +49,49 @@ exports.createLesson = async (req, res) => {
 //   }
 // };
 
+// exports.getAllLessons = async (req, res) => {
+//   try {
+//     const { page = 1, limit = 20, search = "" } = req.query;
+//     const query = {
+//       $or: [
+//         { description: { $regex: search, $options: "i" } },
+//         { rootCause: { $regex: search, $options: "i" } },
+//         { actionsTaken: { $regex: search, $options: "i" } },
+//       ],
+//     };
+
+//     const lessons = await LessonLearned.find(query)
+//       .populate("sprintId", "name")
+//       .populate("epicId", "name")
+//       .populate("projectId", "name")
+//       .populate("author", "name")
+//       .populate("contributors", "name")
+//       .populate("phaseStageId", "name")
+//       .populate("impactId", "name")
+//       .populate("lessonsLearnedId", "name")
+//       .populate("recommendationsId", "name")
+//       .populate("prioritySeverityId", "name")
+//       .populate("frequencyId", "name")
+//       .sort({ createdDate: -1 })
+//       .skip((page - 1) * limit)
+//       .limit(Number(limit));
+
+//     const total = await LessonLearned.countDocuments(query);
+
+//     res.json({ lessons, totalPages  });
+//   } catch (err) {
+//     res.status(500).json({ message: "Failed to fetch lessons", error: err.message });
+//   }
+// };
+
+
 exports.getAllLessons = async (req, res) => {
   try {
-    const { page = 1, limit = 5, search = "" } = req.query;
+    const { page = 1, limit = 40, search = "" } = req.query;
+
+    const numericPage = Number(page);
+    const numericLimit = Number(limit);
+
     const query = {
       $or: [
         { description: { $regex: search, $options: "i" } },
@@ -59,6 +99,9 @@ exports.getAllLessons = async (req, res) => {
         { actionsTaken: { $regex: search, $options: "i" } },
       ],
     };
+
+    const total = await LessonLearned.countDocuments(query);
+    const totalPages = Math.ceil(total / numericLimit);
 
     const lessons = await LessonLearned.find(query)
       .populate("sprintId", "name")
@@ -73,16 +116,18 @@ exports.getAllLessons = async (req, res) => {
       .populate("prioritySeverityId", "name")
       .populate("frequencyId", "name")
       .sort({ createdDate: -1 })
-      .skip((page - 1) * limit)
-      .limit(Number(limit));
+      .skip((numericPage - 1) * numericLimit)
+      .limit(numericLimit);
 
-    const total = await LessonLearned.countDocuments(query);
-
-    res.json({ lessons, total });
+    res.json({ lessons, totalPages });
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch lessons", error: err.message });
+    res.status(500).json({
+      message: "Failed to fetch lessons",
+      error: err.message,
+    });
   }
 };
+
 
 
 // Get by ID

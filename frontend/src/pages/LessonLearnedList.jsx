@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axiosInstance";
-import Modal from "../components/Modal"; // Create this modal component or use your existing modal
-import LessonDetailModal from "../components/LessonDetailModal"; // Component to preview/download/delete files
+import Modal from "../components/Modal";
+import LessonDetailModal from "../components/LessonDetailModal";
 
 const LessonLearnedList = () => {
   const [lessons, setLessons] = useState([]);
@@ -11,14 +11,15 @@ const LessonLearnedList = () => {
   const [search, setSearch] = useState("");
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [editMode, setEditMode] = useState(false);
+  const limit = 20;
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const fetchLessons = async () => {
     try {
-      const res = await axios.get(`/lesson-learned?page=${page}&search=${search}`);
-      setLessons(res.data.lessons);
-      setTotalPages(res.data.totalPages);
+      const res = await axios.get(`/lesson-learned?page=${page}&limit=${limit}&search=${search}`);
+      setLessons(res.data.lessons || []);
+      setTotalPages(Number(res.data.totalPages) || 1);
     } catch (err) {
       console.error("Failed to fetch lessons", err);
     }
@@ -40,13 +41,54 @@ const navigate = useNavigate();
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
-    setPage(1); // reset to first page on new search
+    setPage(1);
+  };
+
+  const renderPagination = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    const startPage = Math.max(1, page - Math.floor(maxVisiblePages / 2));
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <button
+          key={i}
+          className={`px-3 py-1 rounded border ${i === page ? "bg-blue-600 text-white" : "bg-white text-gray-700"}`}
+          onClick={() => setPage(i)}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    return (
+      <div className="flex gap-2 items-center mt-4 justify-end">
+        <button
+          className="px-3 py-1 rounded border"
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+          disabled={page === 1}
+        >
+          «
+        </button>
+
+        {pages}
+
+        <button
+          className="px-3 py-1 rounded border"
+          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={page === totalPages}
+        >
+          »
+        </button>
+      </div>
+    );
   };
 
   return (
     <div className="p-6">
       <h2 className="text-xl font-bold text-blue-700 mb-4">Lesson Learned Register</h2>
-      
+
       <div className="flex justify-between items-center mb-4">
         <input
           type="text"
@@ -55,7 +97,7 @@ const navigate = useNavigate();
           value={search}
           onChange={handleSearchChange}
         />
-        <button>Export to Excel</button>
+        <button className="bg-green-500 text-white px-4 py-1 rounded text-sm">Export to Excel</button>
       </div>
 
       <table className="w-full text-sm border shadow rounded">
@@ -72,7 +114,7 @@ const navigate = useNavigate();
         <tbody>
           {lessons.map((lesson, index) => (
             <tr key={lesson._id}>
-              <td className="p-2 border text-center">{(page - 1) * 5 + index + 1}</td>
+              <td className="p-2 border text-center">{(page - 1) * limit + index + 1}</td>
               <td className="p-2 border">{new Date(lesson.loggedDate).toLocaleDateString()}</td>
               <td className="p-2 border">{lesson.sprintId?.name || "N/A"}</td>
               <td className="p-2 border">{lesson.description?.substring(0, 40)}...</td>
@@ -80,16 +122,13 @@ const navigate = useNavigate();
               <td className="p-2 border text-center space-x-2">
                 <button
                   className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
-                  onClick={() => { setSelectedLesson(lesson); setEditMode(false); }}
+                  onClick={() => {
+                    setSelectedLesson(lesson);
+                    setEditMode(false);
+                  }}
                 >
                   View
                 </button>
-                {/* <button
-                  className="bg-yellow-500 text-white px-2 py-1 rounded text-xs"
-                  onClick={() => { setSelectedLesson(lesson); setEditMode(true); }}
-                >
-                  Edit
-                </button> */}
                 <button
                   className="bg-yellow-500 text-white px-2 py-1 rounded text-xs"
                   onClick={() => navigate(`/LessonEditPage/edit/${lesson._id}`)}
@@ -107,32 +146,18 @@ const navigate = useNavigate();
           ))}
           {lessons.length === 0 && (
             <tr>
-              <td colSpan="6" className="text-center p-4 text-gray-400">No records found.</td>
+              <td colSpan="6" className="text-center p-4 text-gray-400">
+                No records found.
+              </td>
             </tr>
           )}
         </tbody>
       </table>
 
-      {/* Pagination Controls */}
-      <div className="flex justify-end mt-3 gap-2">
-        <button
-          onClick={() => setPage((p) => Math.max(p - 1, 1))}
-          className="bg-gray-200 px-3 py-1 rounded"
-          disabled={page === 1}
-        >
-          Prev
-        </button>
-        <span className="text-sm pt-1">Page {page} of {totalPages}</span>
-        <button
-          onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-          className="bg-gray-200 px-3 py-1 rounded"
-          disabled={page === totalPages}
-        >
-          Next
-        </button>
-      </div>
+      {/* 🎯 Pagination */}
+      {totalPages > 1 && renderPagination()}
 
-      {/* Modal for View / Edit */}
+      {/* Modal for View/Edit */}
       {selectedLesson && (
         <Modal
           isOpen={!!selectedLesson}
@@ -148,10 +173,11 @@ const navigate = useNavigate();
             }}
           />
         </Modal>
-
       )}
     </div>
   );
 };
 
 export default LessonLearnedList;
+
+

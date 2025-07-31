@@ -1,7 +1,12 @@
 import axios from "axios";
 
+export const baseURL = window.location.hostname.includes('localhost')
+  ? 'http://localhost:5000'
+  : 'http://api.al.3em.tech';
+
 const instance = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: `${baseURL}/api`,
+  withCredentials: true,
 });
 
 instance.interceptors.request.use((config) => {

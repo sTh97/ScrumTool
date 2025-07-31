@@ -1,5 +1,6 @@
 import React from "react";
 import { FaFilePdf, FaDownload, FaTrash } from "react-icons/fa";
+import { baseURL } from "../api/axiosInstance";
 
 const FileViewer = ({ lesson = {}, isEdit, onDelete }) => {
   const files = lesson.files || [];
@@ -17,8 +18,9 @@ const FileViewer = ({ lesson = {}, isEdit, onDelete }) => {
             <span>{file.originalname}</span>
           </div>
           <div className="flex gap-2">
-            <a
+           <a
               href={`http://localhost:5000/uploads/lesson-files/${file.filename}`}
+              // href={`http://api.al.3em.tech/uploads/lesson-files/${file.filename}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline"
