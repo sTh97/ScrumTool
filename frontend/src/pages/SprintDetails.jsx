@@ -210,9 +210,9 @@ const SprintDetails = () => {
             <div key={idx} className="border border-gray-200 rounded p-4">
 
 
-              <div className="overflow-x-auto bg- ">
-                <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md ">
-                  <thead className="bg-gray-700 text-white">
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
+                  <thead className="bg-gray-700">
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Story Details</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Metrics</th>
@@ -306,217 +306,216 @@ const SprintDetails = () => {
                     + Add Task
                   </button>
                 </div>
+
+                <div className="col-span-10 grid grid-cols-7 gap-2 mt-4 text-sm  px-2 py-1 rounded"></div>
                 {tasksByStory[story.storyId._id]?.length > 0 ? (
                   <div className="grid grid-cols-7 gap-2 text-sm mt-2">
-                    {/* Table Header - Only shown once at the top */}
-                    <div className="col-span-10">
-                      <table className="w-full mt-4 text-sm px-2 py-1 border border-gray-300 rounded-lg">
-                        <thead className="bg-blue-200 py-4 px-2 border border-gray-300 rounded-lg">
-                          <tr className="grid grid-cols-10 gap-2">
-                            <th className="font-semibold text-left px-2 py-2">Title</th>
-                            <th className="font-semibold text-left px-2 py-2">Description</th>
-                            <th className="font-semibold text-left px-2 py-2">Assigned</th>
-                            <th className="font-semibold text-left px-2 py-2">Est. Hrs</th>
-                            <th className="font-semibold text-left px-2 py-2">Act. Hrs</th>
-                            <th className="font-semibold text-left px-2 py-2">Status</th>
-                            <th className="font-semibold text-left px-2 py-2">Change Logs</th>
-                            <th className="font-semibold text-left px-2 py-2">Active Sessions</th>
-                            <th className="font-semibold text-left px-2 py-2">Chat History</th>
-                            <th className="font-semibold text-left px-2 py-2">Actions</th>
-                          </tr>
-                        </thead>
-                      </table>
-                    </div>
+                    <table className="col-span-10 w-full mt-4 text-sm px-2 py-1 rounded">
+                      <thead className="bg-blue-200 py-4 px-2 border border-gray-300 rounded-lg">
+                        <tr className="grid grid-cols-10 gap-2">
+                          <th className="font-semibold text-left px-2 py-2">Title</th>
+                          <th className="font-semibold text-left px-2 py-2">Description</th>
+                          <th className="font-semibold text-left px-2 py-2">Assigned</th>
+                          <th className="font-semibold text-left px-2 py-2">Est. Hrs</th>
+                          <th className="font-semibold text-left px-2 py-2">Act. Hrs</th>
+                          <th className="font-semibold text-left px-2 py-2">Status</th>
+                          <th className="font-semibold text-left px-2 py-2">Change Logs</th>
+                          <th className="font-semibold text-left px-2 py-2">Active Sessions</th>
+                          <th className="font-semibold text-left px-2 py-2">Chat History</th>
+                          <th className="font-semibold text-left px-2 py-2">Actions</th>
+                        </tr>
+                      </thead>
 
-                    {tasksByStory[story.storyId._id].map((task, index) => (
-                      <React.Fragment key={task._id}>
-                        <div className="col-span-10 grid grid-cols-7 gap-2 mt-1 text-sm bg-stone-100 px-2 py-1 rounded">
-                          <table className="col-span-10 w-full text-sm px-2 py-1 rounded">
-                            <tbody>
-                              <tr className="grid grid-cols-10 gap-2 py-1">
-                                <td>{task.title}</td>
-                                <td>{task.description}</td>
-                                <td>{task.assignedTo?.name}</td>
-                                <td>{task.estimatedHours}</td>
-                                <td>{task.actualHours || 0}</td>
-                                <td>{task.status}</td>
-                                <td>
-                                  {task.changeLog?.length > 0 && (
-                                    <button
-                                      onClick={() => handleOpenDrawer(task, 'changeLog')}
-                                      className="text-xs text-blue-600 hover:underline"
-                                    >
-                                      Changes Logs({task.changeLog.length})
-                                    </button>
-                                  )}
-                                </td>
-                                <td>
-                                  {task.activeSessions?.length > 0 && (
-                                    <button
-                                      onClick={() => handleOpenDrawer(task, 'activeSessions')}
-                                      className="text-xs text-blue-600 hover:underline"
-                                    >
-                                      Active Sessions ({task.activeSessions.length})
-                                    </button>
-                                  )}
-                                </td>
-                                <td>
-                                  {task.chatHistory?.length > 0 && (
-                                    <button
-                                      onClick={() => handleOpenDrawer(task, 'chatHistory')}
-                                      className="text-xs text-blue-600 hover:underline"
-                                    >
-                                      Chat History ({task.chatHistory.length})
-                                    </button>
-                                  )}
-                                </td>
-                                <td className="space-x-1">
+                      {tasksByStory[story.storyId._id].map((task, index) => (
+                        <React.Fragment key={task._id}>
+
+
+
+
+                          <tbody>
+                            <tr className="grid grid-cols-10 gap-2 py-1 bg-stone-100 my-2">
+                              <td>{task.title}</td>
+                              <td>{task.description}</td>
+                              <td>{task.assignedTo?.name}</td>
+                              <td>{task.estimatedHours}</td>
+                              <td>{task.actualHours || 0}</td>
+                              <td>{task.status}</td>
+                              <td>
+                                {task.changeLog?.length > 0 && (
                                   <button
-                                    onClick={() => setEditTask(task)}
-                                    className="text-xs text-blue-600"
+                                    onClick={() => handleOpenDrawer(task, 'changeLog')}
+                                    className="text-xs text-blue-600 hover:underline"
                                   >
-                                    ✏️
+                                    Changes Logs({task.changeLog.length})
                                   </button>
+                                )}
+                              </td>
+                              <td>
+                                {task.activeSessions?.length > 0 && (
                                   <button
-                                    onClick={() => handleDeleteTask(task._id, story.storyId._id)}
-                                    className="text-xs text-red-600"
+                                    onClick={() => handleOpenDrawer(task, 'activeSessions')}
+                                    className="text-xs text-blue-600 hover:underline"
                                   >
-                                    🗑️
+                                    Active Sessions ({task.activeSessions.length})
                                   </button>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </React.Fragment>
-                    ))}
+                                )}
+                              </td>
+                              <td>
+                                {task.chatHistory?.length > 0 && (
+                                  <button
+                                    onClick={() => handleOpenDrawer(task, 'chatHistory')}
+                                    className="text-xs text-blue-600 hover:underline"
+                                  >
+                                    Chat History ({task.chatHistory.length})
+                                  </button>
+                                )}
+                              </td>
+                              <td className="space-x-1">
+                                <button
+                                  onClick={() => setEditTask(task)}
+                                  className="text-xs text-blue-600"
+                                >✏️</button>
+                                <button
+                                  onClick={() => handleDeleteTask(task._id, story.storyId._id)}
+                                  className="text-xs text-red-600"
+                                >🗑️</button>
+                              </td>
+                            </tr>
+                          </tbody>
 
-                    {/* Drawers outside the mapping */}
-                    <Drawer
-                      title={`Change Logs for ${selectedTask?.title || 'Task'}`}
-                      placement="right"
-                      onClose={() => handleCloseDrawer('changeLog')}
-                      open={openDrawer.changeLog}
-                      width={600}
-                    >
-                      {selectedTask?.changeLog?.map((log, index) => (
-                        <div className="col-span-7 mt-2 px-3 py-2 bg-yellow-50 border rounded text-xs text-gray-800">
-                          <p className="font-bold text-gray-700 mb-1">Change Log</p>
-                          <div className="max-h-40 overflow-y-auto pr-2">
-                            <ul className="list-disc pl-5 space-y-1">
-                              {[...selectedTask.changeLog].reverse().map((log, index) => (
-                                <li key={index}>
-                                  <span className="text-blue-600 font-semibold">{log.field}</span>{" "}
-                                  changed from{" "}
-                                  <span className="text-red-600 italic">
-                                    {renderValue(log.field, log.oldValue)}
-                                  </span>{" "}
-                                  to{" "}
-                                  <span className="text-green-600 italic">
-                                    {renderValue(log.field, log.newValue)}
-                                  </span>{" "}
-                                  by{" "}
-                                  <span className="text-purple-600 font-medium">
-                                    {resolveUserName(log.changedBy)}
-                                  </span>{" "}
-                                  <span className="text-gray-500 text-[11px] ml-1">
-                                    ({new Date(log.changedAt).toLocaleString()})
-                                  </span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      ))}
-                    </Drawer>
-
-                    <Drawer
-                      title={`Active Sessions for ${selectedTask?.title || 'Task'}`}
-                      placement="right"
-                      onClose={() => handleCloseDrawer('activeSessions')}
-                      open={openDrawer.activeSessions}
-                      width={600}
-                    >
-                      {selectedTask?.activeSessions?.length > 0 ? (
-                        <div className="mt-2 px-3 py-2 bg-indigo-50 border rounded text-xs text-gray-800">
-                          <p className="font-bold text-gray-700 mb-1">Active Sessions</p>
-                          <div className="max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
-                            <ul className="list-disc pl-5 space-y-1">
-                              {selectedTask.activeSessions.map((s, i) => (
-                                <li key={i}>
-                                  <span className="text-blue-700 font-semibold">From</span>{" "}
-                                  <span className="text-gray-800">{new Date(s.from).toLocaleString()}</span>{" "}
-                                  <span className="text-blue-700 font-semibold">to</span>{" "}
-                                  <span className="text-gray-800">
-                                    {s.to ? new Date(s.to).toLocaleString() : "Ongoing"}
-                                  </span>
-                                  {s.to && (
-                                    <>
-                                      {" "}
-                                      <span className="text-purple-700 font-semibold ml-2">Duration:</span>{" "}
-                                      <span className="text-purple-800 font-mono">
-                                        {formatDuration(s.from, s.to)}
-                                      </span>
-                                    </>
-                                  )}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="mt-2 px-3 py-2 bg-yellow-50 border rounded text-xs text-gray-800">
-                          <p className="font-bold text-gray-700 mb-1">Active Sessions</p>
-                          <p className="text-gray-600 italic">No tracked sessions</p>
-                        </div>
-                      )}
-                    </Drawer>
-
-                    <Drawer
-                      title={`Chat History for ${selectedTask?.title || 'Task'}`}
-                      placement="right"
-                      onClose={() => handleCloseDrawer('chatHistory')}
-                      open={openDrawer.chatHistory}
-                      width={600}
-                    >
-                      <div className="bg-gray-50 p-2 rounded border">
-                        <p className="font-bold text-sm text-gray-800 mb-1">Chat History</p>
-                        {selectedTask?.chatHistory?.length > 0 ? (
-                          <ul className="pl-3 text-xs text-gray-800 space-y-2 max-h-[calc(100vh-250px)] overflow-y-auto pr-2">
-                            {[...(selectedTask.chatHistory || [])].reverse().map((msg, idx) => (
-                              <li key={idx} className="bg-white rounded px-3 py-2 border shadow-sm">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-blue-700 font-semibold">{msg.addedBy?.name || 'User'}</span>
-                                  <span className="text-gray-400 text-[11px]">
-                                    {new Date(msg.timestamp).toLocaleString()}
-                                  </span>
-                                </div>
-                                <div className="text-gray-700 mt-1">{msg.message}</div>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p className="text-gray-600 italic">No chat history</p>
-                        )}
-
-                        <div className="flex items-center gap-2 mt-3">
-                          <input
-                            type="text"
-                            placeholder="Type a message..."
-                            value={chatInputs[selectedTask?._id] || ""}
-                            onChange={(e) => handleChatInputChange(selectedTask?._id, e.target.value)}
-                            className="flex-1 border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-400"
-                          />
-                          <button
-                            onClick={() => handleSendChat(selectedTask?._id, story.storyId._id)}
-                            className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded"
+                          <Drawer
+                            title={`Change Logs for ${selectedTask?.title || 'Task'}`}
+                            placement="right"
+                            onClose={() => handleCloseDrawer('changeLog')}
+                            open={openDrawer.changeLog}
+                            width={600}
                           >
-                            Send
-                          </button>
-                        </div>
-                      </div>
-                    </Drawer>
+                            {selectedTask?.changeLog?.map((log, index) => (
+                              <div className="col-span-7 mt-2 px-3 py-2 bg-yellow-50 border rounded text-xs text-gray-800">
+                                <p className="font-bold text-gray-700 mb-1">Change Log</p>
+                                <div className="max-h-40 overflow-y-auto pr-2">
+                                  <ul className="list-disc pl-5 space-y-1">
+                                    {[...task.changeLog].reverse().map((log, index) => (
+                                      <li key={index}>
+                                        <span className="text-blue-600 font-semibold">{log.field}</span>{" "}
+                                        changed from{" "}
+                                        <span className="text-red-600 italic">
+                                          {renderValue(log.field, log.oldValue)}
+                                        </span>{" "}
+                                        to{" "}
+                                        <span className="text-green-600 italic">
+                                          {renderValue(log.field, log.newValue)}
+                                        </span>{" "}
+                                        by{" "}
+                                        <span className="text-purple-600 font-medium">
+                                          {resolveUserName(log.changedBy)}
+                                        </span>{" "}
+                                        <span className="text-gray-500 text-[11px] ml-1">
+                                          ({new Date(log.changedAt).toLocaleString()})
+                                        </span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </div>
+                            ))}
+                          </Drawer>
+
+                          <Drawer
+                            title={`Active Sessions for ${selectedTask?.title || 'Task'}`}
+                            placement="right"
+                            onClose={() => handleCloseDrawer('activeSessions')}
+                            open={openDrawer.activeSessions}
+                            width={600}
+                          >
+                            {selectedTask?.activeSessions?.length > 0 ? (
+                              <div className="mt-2 px-3 py-2 bg-indigo-50 border rounded text-xs text-gray-800">
+                                <p className="font-bold text-gray-700 mb-1">Active Sessions</p>
+                                <div className="max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
+                                  <ul className="list-disc pl-5 space-y-1">
+                                    {selectedTask.activeSessions.map((s, i) => (
+                                      <li key={i}>
+                                        <span className="text-blue-700 font-semibold">From</span>{" "}
+                                        <span className="text-gray-800">{new Date(s.from).toLocaleString()}</span>{" "}
+                                        <span className="text-blue-700 font-semibold">to</span>{" "}
+                                        <span className="text-gray-800">
+                                          {s.to ? new Date(s.to).toLocaleString() : "Ongoing"}
+                                        </span>
+                                        {s.to && (
+                                          <>
+                                            {" "}
+                                            <span className="text-purple-700 font-semibold ml-2">Duration:</span>{" "}
+                                            <span className="text-purple-800 font-mono">
+                                              {formatDuration(s.from, s.to)}
+                                            </span>
+                                          </>
+                                        )}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="mt-2 px-3 py-2 bg-yellow-50 border rounded text-xs text-gray-800">
+                                <p className="font-bold text-gray-700 mb-1">Active Sessions</p>
+                                <p className="text-gray-600 italic">No tracked sessions</p>
+                              </div>
+                            )}
+                          </Drawer>
+
+                          <Drawer
+                            title={`Chat History for ${selectedTask?.title || 'Task'}`}
+                            placement="right"
+                            onClose={() => handleCloseDrawer('chatHistory')}
+                            open={openDrawer.chatHistory}
+                            width={600}
+                          >
+                            <div className="bg-gray-50 p-2 rounded border">
+                              <p className="font-bold text-sm text-gray-800 mb-1">Chat History</p>
+                              {selectedTask?.chatHistory?.length > 0 ? (
+                                <ul className="pl-3 text-xs text-gray-800 space-y-2 max-h-[calc(100vh-250px)] overflow-y-auto pr-2">
+                                  {[...(selectedTask.chatHistory || [])].reverse().map((msg, idx) => (
+                                    <li key={idx} className="bg-white rounded px-3 py-2 border shadow-sm">
+                                      <div className="flex items-center justify-between">
+                                        <span className="text-blue-700 font-semibold">{msg.addedBy?.name || 'User'}</span>
+                                        <span className="text-gray-400 text-[11px]">
+                                          {new Date(msg.timestamp).toLocaleString()}
+                                        </span>
+                                      </div>
+                                      <div className="text-gray-700 mt-1">{msg.message}</div>
+                                    </li>
+                                  ))}
+                                </ul>
+                              ) : (
+                                <p className="text-gray-600 italic">No chat history</p>
+                              )}
+
+                              <div className="flex items-center gap-2 mt-3">
+                                <input
+                                  type="text"
+                                  placeholder="Type a message..."
+                                  value={chatInputs[selectedTask?._id] || ""}
+                                  onChange={(e) => handleChatInputChange(selectedTask?._id, e.target.value)}
+                                  className="flex-1 border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-400"
+                                />
+                                <button
+                                  onClick={() => handleSendChat(selectedTask?._id, story.storyId._id)}
+                                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded"
+                                >
+                                  Send
+                                </button>
+                              </div>
+                            </div>
+                          </Drawer>
+
+
+                        </React.Fragment>
+
+                      ))}
+                    </table>
                   </div>
+
+
                 ) : (
                   <p className="text-sm text-gray-500">No tasks added.</p>
                 )}
@@ -689,6 +688,75 @@ const SprintDetails = () => {
                 disabled={taskLoading}
                 className="bg-blue-600 text-white px-4 py-2 rounded"
               >{taskLoading ? "Updating..." : "Save"}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+
+
+      {drawerOpen && (
+        <div className="fixed inset-0 z-50 overflow-hidden">
+          {/* Overlay */}
+          <div
+            className="absolute inset-0 bg-black bg-opacity-50 transition-opacity"
+            onClick={() => setDrawerOpen(false)}
+          ></div>
+
+          {/* Drawer panel */}
+          <div className="absolute inset-y-0 right-0 max-w-full flex">
+            <div className="relative w-screen max-w-md">
+              <div className="h-full flex flex-col bg-white shadow-xl">
+                {/* Header */}
+                <div className="flex items-center justify-between px-4 py-6 border-b">
+                  <h3 className="text-lg font-bold">Change Log</h3>
+                  <button
+                    onClick={() => setDrawerOpen(false)}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    <span className="sr-only">Close</span>
+                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 overflow-y-auto p-4">
+                  {selectedTask?.changeLog?.length > 0 ? (
+                    <ul className="space-y-3">
+                      {[...selectedTask.changeLog].reverse().map((log, index) => (
+                        <li key={index} className="border-b pb-3 last:border-b-0">
+                          <div className="text-sm font-medium text-blue-600">
+                            {log.field} changed
+                          </div>
+                          <div className="text-xs mt-1 flex items-center">
+                            <span className="text-red-500 line-through mr-2">
+                              {renderValue(log.field, log.oldValue)}
+                            </span>
+                            <span className="text-gray-400 mx-1">→</span>
+                            <span className="text-green-600 ml-1">
+                              {renderValue(log.field, log.newValue)}
+                            </span>
+                          </div>
+                          <div className="text-xs text-gray-500 mt-1">
+                            <span>By </span>
+                            <span className="text-purple-600">
+                              {resolveUserName(log.changedBy)}
+                            </span>
+                            <span className="ml-2">
+                              {new Date(log.changedAt).toLocaleString()}
+                            </span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-gray-500">No changes recorded</p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
