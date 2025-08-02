@@ -27,63 +27,6 @@ exports.createLesson = async (req, res) => {
   }
 };
 
-// Get All
-// exports.getAllLessons = async (req, res) => {
-//   try {
-//     const lessons = await LessonLearned.find()
-//       .populate("sprintId", "name")
-//       .populate("projectId", "name")
-//       .populate("epicId", "name")
-//       .populate("author", "name")
-//       .populate("contributors", "name")
-//       .populate("phaseStageId", "name")
-//       .populate("impactId", "name")
-//       .populate("lessonsLearnedId", "name")
-//       .populate("recommendationsId", "name")
-//       .populate("prioritySeverityId", "name")
-//       .populate("frequencyId", "name");
-
-//     res.json(lessons);
-//   } catch (err) {
-//     res.status(500).json({ message: "Failed to fetch lessons", error: err.message });
-//   }
-// };
-
-// exports.getAllLessons = async (req, res) => {
-//   try {
-//     const { page = 1, limit = 20, search = "" } = req.query;
-//     const query = {
-//       $or: [
-//         { description: { $regex: search, $options: "i" } },
-//         { rootCause: { $regex: search, $options: "i" } },
-//         { actionsTaken: { $regex: search, $options: "i" } },
-//       ],
-//     };
-
-//     const lessons = await LessonLearned.find(query)
-//       .populate("sprintId", "name")
-//       .populate("epicId", "name")
-//       .populate("projectId", "name")
-//       .populate("author", "name")
-//       .populate("contributors", "name")
-//       .populate("phaseStageId", "name")
-//       .populate("impactId", "name")
-//       .populate("lessonsLearnedId", "name")
-//       .populate("recommendationsId", "name")
-//       .populate("prioritySeverityId", "name")
-//       .populate("frequencyId", "name")
-//       .sort({ createdDate: -1 })
-//       .skip((page - 1) * limit)
-//       .limit(Number(limit));
-
-//     const total = await LessonLearned.countDocuments(query);
-
-//     res.json({ lessons, totalPages  });
-//   } catch (err) {
-//     res.status(500).json({ message: "Failed to fetch lessons", error: err.message });
-//   }
-// };
-
 
 exports.getAllLessons = async (req, res) => {
   try {

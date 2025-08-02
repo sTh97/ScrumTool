@@ -155,7 +155,7 @@ const TaskList = () => {
         const roles = currentUser?.roles || [];
         const roleNames = Array.isArray(roles) ? roles.map(r => typeof r === "string" ? r : r.name) : [];
 
-        const isAdminOrManager = roleNames.includes("Admin") || roleNames.includes("Management");
+        const isAdminOrManager = roleNames.includes("Admin") || roleNames.includes("Management") || roleNames.includes("Senior Project Supervisor");
 
         const filteredTasks = isAdminOrManager
           ? res.data

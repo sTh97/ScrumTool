@@ -198,6 +198,8 @@ const permissionOptions = [
   { label: "Manage Frequency", value: "frequency_master" },
   { label: "Lesson Learn Register", value: "lesson_learned" },
   { label: "Lesson Learn List", value: "lesson_learned_List" },
+  { label: "Create Document", value: "create_document" },
+  { label: "Documents List", value: "document_list" },
 ];
 
 const RoleManagement = () => {

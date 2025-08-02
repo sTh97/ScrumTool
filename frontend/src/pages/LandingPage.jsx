@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import TypingText from "../components/TypingText";
 import { Link } from "react-scroll";
-import Typical from "react-typical";
+// import Typical from "react-typical";
 
 import estimationImg from "../assets/estimationManagement.png";
 import lessonDetails from "../assets/lessonLearnedDetails.png";
@@ -116,7 +117,7 @@ const LandingPage = () => {
         >
           Welcome to ActionLoop
         </motion.h2>
-        <Typical
+        {/* <Typical
           steps={[
             "Empowering Agile Teams",
             2000,
@@ -128,7 +129,8 @@ const LandingPage = () => {
           loop={Infinity}
           wrapper="h3"
           className="text-xl text-red-400 font-medium mb-8"
-        />
+        /> */}
+        <TypingText texts={['Welcome to ActionLoop', 'Plan. Track. Deliver.']} />
         <p className="max-w-3xl mx-auto text-gray-300 text-lg">
           ActionLoop is a modern, AI-powered Scrum & Project Management platform
           that streamlines execution with intelligent backlog management,

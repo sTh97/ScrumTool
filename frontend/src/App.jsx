@@ -24,6 +24,10 @@ import LessonLearnedForm from "./pages/LessonLearnedRegister"
 import LessonLearnedList from "./pages/LessonLearnedList"
 import LessonEditPage from "./pages/LessonEditPage"
 import LandingPage from "./pages/LandingPage"
+import CreateDocument from "./pages/CreateDocument"
+import DocumentsList from "./pages/DocumentsList"
+import DocumentDetails from "./pages/DocumentDetails"
+import DocumentEdit from "./pages/DocumentEditForm"
 import Layout from "./components/Layout";
 
 const App = () => {
@@ -223,6 +227,42 @@ const App = () => {
         </ProtectedRoute>
       }
     />
+
+    <Route
+      path="/CreateDocument"
+      element={
+        <ProtectedRoute>
+          <Layout><CreateDocument /></Layout>
+        </ProtectedRoute>
+      }
+    />
+
+    <Route
+      path="/DocumentsList"
+      element={
+        <ProtectedRoute>
+          <Layout><DocumentsList /></Layout>
+        </ProtectedRoute>
+      }
+    />
+
+    <Route
+      path="/DocumentDetails/:id"
+      element={
+        <ProtectedRoute>
+          <Layout><DocumentDetails /></Layout>
+        </ProtectedRoute>
+      }
+    />  
+
+    <Route
+      path="/DocumentEdit/:id"
+      element={
+        <ProtectedRoute>
+          <Layout><DocumentEdit /></Layout>
+        </ProtectedRoute>
+      }
+    />  
 
     </Routes>
     

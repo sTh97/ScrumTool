@@ -23,6 +23,8 @@ const recommendationsRoutes = require("./routes/recommendationsMasterRoutes");
 const prioritySeverityRoutes = require("./routes/prioritySeverityRoutes");
 const frequencyRoutes = require("./routes/frequencyRoutes");
 const lessonLearnedRoutes = require("./routes/lessonLearnedRoutes");
+const documentationRoutes = require('./routes/documentationRoutes');
+
 
 
 const allowedOrigins = ['http://api.al.3em.tech', 'http://al.3em.tech', 'http://localhost:3000', 'http://localhost:5000'];
@@ -73,8 +75,11 @@ app.use("/api/recommendations", recommendationsRoutes);
 app.use("/api/priority-severity", prioritySeverityRoutes);
 app.use("/api/frequency", frequencyRoutes);
 app.use("/api/lesson-learned", lessonLearnedRoutes);
+app.use('/api/docs', documentationRoutes);
+
 // app.use("/uploads", express.static("uploads"));
 app.use("/uploads/lesson-files", express.static(path.join(__dirname, "uploads/lesson-files")));
+app.use("/uploads/docs", express.static(path.join(__dirname, "uploads/docs")));
 
 
 // Enable Swagger UI

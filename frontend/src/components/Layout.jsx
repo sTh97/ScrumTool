@@ -166,6 +166,17 @@ const Layout = ({ children }) => {
                   )}
 
                   {/* Regular Non-Collapsible Items */}
+                  {hasPermission("create_document") && (
+                    <Link to="/CreateDocument" className={linkClass(location.pathname === "/CreateDocument")}>
+                      Create Document
+                    </Link>
+                  )}
+                  {hasPermission("document_list") && (
+                    <Link to="/DocumentsList" className={linkClass(location.pathname === "/DocumentsList")}>
+                      Documents List
+                    </Link>
+                  )}
+                  
                   {hasPermission("manage_epics") && (
                     <Link to="/epics" className={linkClass(location.pathname === "/epics")}>
                       Epic Management
