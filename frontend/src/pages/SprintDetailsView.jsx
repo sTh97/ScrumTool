@@ -179,7 +179,12 @@ const SprintDetailsView = () => {
                     }}
                     className="border p-2 rounded"
                   >
-                    {['XS','S','M','L','XL'].map(size => <option key={size} value={size}>{size}</option>)}
+                    {/* {['XS','S','M','L','XL'].map(size => <option key={size} value={size}>{size}</option>)} */}
+                    {estimations.map(est => (
+                      <option key={est.label} value={est.label}>
+                        {est.label}
+                      </option>
+                    ))}
                   </select>
                   <input
                     type="number"
