@@ -1,5 +1,9 @@
 // controllers/sprintController.js
 const Sprint = require("../models/Sprint");
+const User = require("../models/User");
+const Epic = require("../models/Epic");
+const Project = require("../models/Project");
+const UserStory = require("../models/UserStory");
 
 exports.createSprint = async (req, res) => {
   try {
@@ -8,16 +12,6 @@ exports.createSprint = async (req, res) => {
     res.status(201).json(sprint);
   } catch (err) {
     res.status(400).json({ message: "Error creating sprint", error: err.message });
-  }
-};
-
-exports.getAllSprints = async (req, res) => {
-  try {
-    const sprints = await Sprint.find().populate("project").populate("epic");
-    res.json(sprints);
-    // console.log(sprints)
-  } catch (err) {
-    res.status(500).json({ message: "Error fetching sprints" });
   }
 };
 
@@ -39,25 +33,6 @@ exports.deleteSprint = async (req, res) => {
   }
 };
 
-// exports.assignTeamToSprint = async (req, res) => {
-//   try {
-//     const { teamMembers } = req.body;
-
-//     const sprint = await Sprint.findById(req.params.id);
-//     if (!sprint) return res.status(404).json({ message: "Sprint not found" });
-
-//     // if (!sprint.project) {
-//     //   return res.status(400).json({ message: "Cannot assign team: Sprint has no associated project" });
-//     // }
-
-//     sprint.teamMembers = teamMembers;
-//     await sprint.save();
-//     res.json(sprint);
-//   } catch (err) {
-//     res.status(500).json({ message: "Error assigning team to sprint", error: err.message });
-//   }
-// };
-
 exports.assignTeamToSprint = async (req, res) => {
   try {
     const { teamMembers } = req.body;
@@ -77,25 +52,6 @@ exports.assignTeamToSprint = async (req, res) => {
     res.status(500).json({ message: "Error assigning team to sprint", error: err.message });
   }
 };
-
-
-
-// exports.assignStoriesToSprint = async (req, res) => {
-//   try {
-//     const { userStories } = req.body; // stories = [{ storyId, tshirtSize, estimatedHours }]
-//     // console.log(req.body)
-//     const sprint = await Sprint.findById(req.params.id);
-//     if (!sprint) return res.status(404).json({ message: "Sprint not found" });
-
-//     // Validate entries if needed
-//     sprint.userStories = userStories;
-//     await sprint.save();
-//     // console.log(sprint, "Check stories:", userStories, "Check userStories:", sprint.userStories)
-//     res.json(sprint);
-//   } catch (err) {
-//     res.status(500).json({ message: "Error assigning stories to sprint", error: err.message });
-//   }
-// };
 
 exports.assignStoriesToSprint = async (req, res) => {
   try {
@@ -136,8 +92,6 @@ exports.assignTeamToSprint = async (req, res) => {
   }
 };
 
-
-
 // Get single sprint with team and user stories populated
 exports.getSprintDetails = async (req, res) => {
   try {
@@ -173,5 +127,57 @@ exports.getAllSprints = async (req, res) => {
     res.status(500).json({ message: 'Error fetching sprints', error: err.message });
   }
 };
+
+// exports.getAllSprintsPagination = async (req, res) => {
+//   try {
+//     const { search = "", page = 1, limit = 3 } = req.query;
+
+//     const query = {
+//       $or: [
+//         { name: { $regex: search, $options: "i" } },
+//       ]
+//     };
+
+//     // Search for matching Users, Epics, Projects, User Stories
+//     const [users, epics, projects, stories] = await Promise.all([
+//       User.find({ name: { $regex: search, $options: "i" } }).select("_id"),
+//       Epic.find({ name: { $regex: search, $options: "i" } }).select("_id"),
+//       Project.find({ name: { $regex: search, $options: "i" } }).select("_id"),
+//       UserStory.find({ title: { $regex: search, $options: "i" } }).select("_id"),
+//     ]);
+
+//     // If matches found, expand the $or condition
+//     if (users.length > 0 || epics.length > 0 || projects.length > 0 || stories.length > 0) {
+//       query.$or.push(
+//         { teamMembers: { $in: users.map(u => u._id) } },
+//         { epic: { $in: epics.map(e => e._id) } },
+//         { project: { $in: projects.map(p => p._id) } },
+//         { "userStories.storyId": { $in: stories.map(s => s._id) } }
+//       );
+//     }
+
+//     const sprints = await Sprint.find(query)
+//       .populate("project")
+//       .populate("epic")
+//       .populate("teamMembers")
+//       .populate("userStories.storyId")
+//       .sort({ createdAt: -1 })
+//       .skip((page - 1) * limit)
+//       .limit(parseInt(limit));
+
+//     const total = await Sprint.countDocuments(query);
+
+//     res.status(200).json({
+//       sprints,
+//       total,
+//       page: parseInt(page),
+//       totalPages: Math.ceil(total / limit),
+//     });
+//   } catch (err) {
+//     console.error("Error fetching sprints:", err);
+//     res.status(500).json({ message: "Error fetching sprints", error: err.message });
+//   }
+// };
+
 
 
