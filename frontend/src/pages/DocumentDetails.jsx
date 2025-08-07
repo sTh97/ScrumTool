@@ -43,48 +43,40 @@
 //     versions,
 //   } = document;
 
-//   const footer = `
-//     <div style="font-size:10px; border-top:0px solid #ccc; margin-top:30px; padding-top:6px; text-align:center">
-     
-//     </div>
-//   `;
-
 //   const handleDownloadPDF = () => {
-//       if (!pdfRef.current) return;
+//     if (!pdfRef.current) return;
 
-//       const opt = {
-//         margin: [20, 10], // [topBottom, leftRight]
-//         filename: `${title.replace(/\s+/g, "_")}.pdf`,
-//         image: { type: "jpeg", quality: 0.98 },
-//         html2canvas: { scale: 2 },
-//         jsPDF: {
-//           unit: "mm",
-//           format: "a4",
-//           orientation: "portrait",
-//         },
-//         pagebreak: { mode: ["css", "legacy"] },
-//       };
-
-//       html2pdf()
-//         .set(opt)
-//         .from(pdfRef.current)
-//         .toContainer()
-//         .toCanvas()
-//         .toPdf()
-//         .get("pdf")
-//         .then((pdf) => {
-//           const pageCount = pdf.internal.getNumberOfPages();
-//           for (let i = 1; i <= pageCount; i++) {
-//             pdf.setPage(i);
-//             pdf.setFontSize(8);
-//             pdf.text(`SMH Global Services - '${title}'`, 10, 290);
-//             pdf.text(`Page ${i}`, 200, 290, null, null, "right");
-//           }
-//         })
-//         .save();
+//     const opt = {
+//       margin: [20, 10],
+//       filename: `${title.replace(/\s+/g, "_")}.pdf`,
+//       image: { type: "jpeg", quality: 0.98 },
+//       html2canvas: { scale: 2 },
+//       jsPDF: {
+//         unit: "mm",
+//         format: "a4",
+//         orientation: "portrait",
+//       },
+//       pagebreak: { mode: ["css", "legacy"] },
 //     };
 
-
+//     html2pdf()
+//       .set(opt)
+//       .from(pdfRef.current)
+//       .toContainer()
+//       .toCanvas()
+//       .toPdf()
+//       .get("pdf")
+//       .then((pdf) => {
+//         const pageCount = pdf.internal.getNumberOfPages();
+//         for (let i = 1; i <= pageCount; i++) {
+//           pdf.setPage(i);
+//           pdf.setFontSize(8);
+//           pdf.text(`SMH Global Services - '${title}'`, 10, 290);
+//           pdf.text(`Page ${i}`, 200, 290, null, null, "right");
+//         }
+//       })
+//       .save();
+//   };
 
 //   return (
 //     <div className="max-w-6xl mx-auto p-6">
@@ -151,271 +143,122 @@
 //         </table>
 //       </div>
 
-//       {/* Hidden Printable PDF Block */}
+//       {/* Hidden printable content */}
 //       <div style={{ display: "none" }}>
-//         <div ref={pdfRef} style={{ backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }}>
-//           <div style={{ padding: 40, fontFamily: "Arial, sans-serif", fontSize: "12px" }}>
-//             {/* <h1 style={{ 
-//               textAlign: "center", 
-//               fontSize: "40px", 
-//               marginBottom: 20 
-//               }}>
-//               {title}
-//               </h1>
-//             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "20px" }}>
-//               <p><strong>Document Type:</strong> {documentType}</p>
-//               <p><strong>Project:</strong> {project?.name}</p>
-//               <p><strong>Created By:</strong> {createdBy?.name}</p>
-//               <p><strong>Updated By:</strong> {updatedBy?.name}</p>
-//               <p><strong>Created At:</strong> {new Date(createdAt).toLocaleString()}</p>
-//               <p><strong>Updated At:</strong> {new Date(updatedAt).toLocaleString()}</p>
-//               <p><strong>Version:</strong> {latestVersion?.versionNumber}</p>
-//               <p><strong>Baseline:</strong> {latestVersion?.isBaselined ? "Yes ✅" : "No ❌"}</p>
-//             </div> */}
+//         <div ref={pdfRef} style={{ backgroundColor: "#fff", fontFamily: "Arial, sans-serif", fontSize: "12px", color: "#000" }}>
 
-//             <div style={{ 
-//             minHeight: "100vh", 
-//             display: "flex", 
-//             flexDirection: "column", 
-//             justifyContent: "center", 
-//             alignItems: "center", 
-//             backgroundColor: "#f8f9fa", 
-//             fontFamily: "Arial, sans-serif",
+//           {/* COVER PAGE */}
+//           <div style={{
+//             padding: "60px 40px",
 //             textAlign: "center",
-//             padding: "40px",
-//             pageBreakAfter: "always"
+//             backgroundColor: "#f8f9fa",
+//             color: "#333"
 //           }}>
-//             <div style={{ marginBottom: "30px" }}>
-//               <img 
-//                 src="/assets/smhLogo.png" 
-//                 alt="SMH Logo" 
-//                 style={{ 
-//                   width: "150px", 
-//                   height: "auto", 
-//                   maxWidth: "100%"
-//                 }} 
-//                 onError={(e) => { e.target.style.display = 'none'; }}
-//               />
+//             <img
+//               src="/assets/smhLogo.png"
+//               alt="SMH Logo"
+//               style={{ width: "150px", height: "auto", marginBottom: "30px" }}
+//               onError={(e) => { e.target.style.display = 'none'; }}
+//             />
+//             <h1 style={{ fontSize: "36px", fontWeight: "bold", marginBottom: "20px" }}>{title}</h1>
+//             <p style={{ fontSize: "20px", marginBottom: "40px" }}>{project?.name || 'Project Name Not Available'}</p>
+//             <div style={{ fontSize: "16px", borderTop: "1px solid #ddd", paddingTop: "20px", width: "300px", margin: "0 auto" }}>
+//               <p>Document Type: {documentType}</p>
+//               <p>Version: {latestVersion?.versionNumber || 'N/A'}</p>
+//               <p>Generated: {new Date().toLocaleDateString()}</p>
 //             </div>
-//             <h1 style={{ 
-//               fontSize: "36px", 
-//               fontWeight: "bold", 
-//               marginBottom: "20px",
-//               color: "#333",
-//               lineHeight: "1.2",
-//               maxWidth: "80%",
-//               wordWrap: "break-word"
-//             }}>
-//               {title}
-//             </h1>
-//             <p style={{ 
-//               fontSize: "20px", 
-//               color: "#666",
-//               marginBottom: "40px"
-//             }}>
-//               {project?.name || 'Project Name Not Available'}
-//             </p>
-//             <div style={{ 
-//               fontSize: "16px", 
-//               color: "#888",
-//               borderTop: "1px solid #ddd",
-//               paddingTop: "20px",
-//               width: "300px"
-//             }}>
-//               <p style={{ margin: "5px 0" }}>Document Type: {documentType}</p>
-//               <p style={{ margin: "5px 0" }}>Version: {latestVersion?.versionNumber || 'N/A'}</p>
-//               <p style={{ margin: "5px 0" }}>Generated: {new Date().toLocaleDateString()}</p>
-//             </div>
-//             </div>
-
-//             <div dangerouslySetInnerHTML={{ __html: footer }} />
-
-//             <div style={{ pageBreakAfter: "always" }} />
-
-//             <h2 style={{ 
-//               fontSize: "18px", 
-//               fontWeight: "bold", 
-//               marginBottom: "20px",
-//               borderBottom: "2px solid #333",
-//               paddingBottom: "5px"
-//             }}>
-//               Document Information
-//             </h2>
-
-//             <table style={{ 
-//               width: "100%", 
-//               marginBottom: "30px",
-//               borderCollapse: "collapse"
-//             }}>
-//               <tbody>
-//                 <tr>
-//                   <td style={{ 
-//                     padding: "8px", 
-//                     fontWeight: "bold", 
-//                     width: "30%",
-//                     borderBottom: "1px solid #eee"
-//                   }}>Document Type:</td>
-//                   <td style={{ 
-//                     padding: "8px",
-//                     borderBottom: "1px solid #eee"
-//                   }}>{documentType}</td>
-//                 </tr>
-//                 <tr>
-//                   <td style={{ 
-//                     padding: "8px", 
-//                     fontWeight: "bold",
-//                     borderBottom: "1px solid #eee"
-//                   }}>Project:</td>
-//                   <td style={{ 
-//                     padding: "8px",
-//                     borderBottom: "1px solid #eee"
-//                   }}>{project?.name || 'N/A'}</td>
-//                 </tr>
-//                 <tr>
-//                   <td style={{ 
-//                     padding: "8px", 
-//                     fontWeight: "bold",
-//                     borderBottom: "1px solid #eee"
-//                   }}>Created By:</td>
-//                   <td style={{ 
-//                     padding: "8px",
-//                     borderBottom: "1px solid #eee"
-//                   }}>{createdBy?.name || 'Unknown'}</td>
-//                 </tr>
-//                 <tr>
-//                   <td style={{ 
-//                     padding: "8px", 
-//                     fontWeight: "bold",
-//                     borderBottom: "1px solid #eee"
-//                   }}>Updated By:</td>
-//                   <td style={{ 
-//                     padding: "8px",
-//                     borderBottom: "1px solid #eee"
-//                   }}>{updatedBy?.name || 'Unknown'}</td>
-//                 </tr>
-//                 <tr>
-//                   <td style={{ 
-//                     padding: "8px", 
-//                     fontWeight: "bold",
-//                     borderBottom: "1px solid #eee"
-//                   }}>Created At:</td>
-//                   <td style={{ 
-//                     padding: "8px",
-//                     borderBottom: "1px solid #eee"
-//                   }}>{createdAt ? new Date(createdAt).toLocaleString() : 'N/A'}</td>
-//                 </tr>
-//                 <tr>
-//                   <td style={{ 
-//                     padding: "8px", 
-//                     fontWeight: "bold",
-//                     borderBottom: "1px solid #eee"
-//                   }}>Updated At:</td>
-//                   <td style={{ 
-//                     padding: "8px",
-//                     borderBottom: "1px solid #eee"
-//                   }}>{updatedAt ? new Date(updatedAt).toLocaleString() : 'N/A'}</td>
-//                 </tr>
-//                 <tr>
-//                   <td style={{ 
-//                     padding: "8px", 
-//                     fontWeight: "bold",
-//                     borderBottom: "1px solid #eee"
-//                   }}>Version:</td>
-//                   <td style={{ 
-//                     padding: "8px",
-//                     borderBottom: "1px solid #eee"
-//                   }}>{latestVersion?.versionNumber || 'N/A'}</td>
-//                 </tr>
-//                 <tr>
-//                   <td style={{ 
-//                     padding: "8px", 
-//                     fontWeight: "bold"
-//                   }}>Baseline:</td>
-//                   <td style={{ 
-//                     padding: "8px"
-//                   }}>{latestVersion?.isBaselined ? "Yes" : "No"}</td>
-//                 </tr>
-//               </tbody>
-//             </table>
-
-//             <div dangerouslySetInnerHTML={{ __html: footer }} />
-
-//             <div style={{ pageBreakAfter: "always" }} />
-
-//             <h2 style={{ fontSize: "18px", marginBottom: "10px" }}>Document Content</h2>
-//             <hr/>
-//             <div style={{ fontSize: "12px", marginBottom: 30 }}>
-//               <div
-//                 dangerouslySetInnerHTML={{
-//                   __html: `
-//                     <style>
-//                       table {
-//                         width: 100%;
-//                         border-collapse: collapse;
-//                         margin: 20px 0;
-//                         font-size: 12px;
-//                       }
-//                       th, td {
-//                         border: 1px solid #ccc;
-//                         padding: 8px;
-//                         text-align: left;
-//                         vertical-align: top;
-//                       }
-//                       th {
-//                         background-color: #f9f9f9;
-//                       }
-//                       tr {
-//                         page-break-inside: avoid;
-//                         break-inside: avoid;
-//                       }
-//                       p { margin: 8px 0; }
-//                     </style>
-//                     ${content}
-//                     ${footer}
-//                   `,
-//                 }}
-//               />
-//             </div>
-
-//             <div style={{ pageBreakAfter: "always" }} />
-
-//             <h2>Attachments</h2>
-//             <ul>
-//               {attachments?.length
-//                 ? attachments.map((file, idx) => <li key={idx}>{file.name}</li>)
-//                 : <li>None</li>}
-//             </ul>
-
-//             <div dangerouslySetInnerHTML={{ __html: footer }} />
-
-//             <div style={{ marginTop: 20 }}>
-//               <h3>Version History</h3>
-//               <table border="1" cellPadding="8" cellSpacing="0" style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
-//                 <thead>
-//                   <tr>
-//                     <th>Version</th>
-//                     <th>Updated By</th>
-//                     <th>Updated At</th>
-//                     <th>Baseline</th>
-//                     <th>Attachments</th>
-//                   </tr>
-//                 </thead>
-//                 <tbody>
-//                   {versions.map((v, i) => (
-//                     <tr key={i}>
-//                       <td>{v.versionNumber}</td>
-//                       <td>{v.updatedBy?.name || "-"}</td>
-//                       <td>{new Date(v.updatedAt).toLocaleString()}</td>
-//                       <td>{v.isBaselined ? "✅" : "❌"}</td>
-//                       <td>{v.attachments?.length || "-"}</td>
-//                     </tr>
-//                   ))}
-//                 </tbody>
-//               </table>
-//             </div>
-
-//             <div dangerouslySetInnerHTML={{ __html: footer }} />
 //           </div>
+
+//           <div style={{ pageBreakAfter: "always" }} />
+
+//           {/* DOCUMENT INFORMATION */}
+//           <h2 style={{ fontSize: "18px", marginBottom: "10px" }}>Document Information</h2>
+//           <table style={{ width: "100%", marginBottom: "30px", borderCollapse: "collapse" }}>
+//             <tbody>
+//               <tr><td><strong>Document Type:</strong></td><td>{documentType}</td></tr>
+//               <tr><td><strong>Project:</strong></td><td>{project?.name}</td></tr>
+//               <tr><td><strong>Created By:</strong></td><td>{createdBy?.name}</td></tr>
+//               <tr><td><strong>Updated By:</strong></td><td>{updatedBy?.name}</td></tr>
+//               <tr><td><strong>Created At:</strong></td><td>{new Date(createdAt).toLocaleString()}</td></tr>
+//               <tr><td><strong>Updated At:</strong></td><td>{new Date(updatedAt).toLocaleString()}</td></tr>
+//               <tr><td><strong>Version:</strong></td><td>{latestVersion?.versionNumber}</td></tr>
+//               <tr><td><strong>Baseline:</strong></td><td>{latestVersion?.isBaselined ? "Yes" : "No"}</td></tr>
+//             </tbody>
+//           </table>
+
+//           <div style={{ pageBreakAfter: "always" }} />
+
+//           {/* CONTENT */}
+//           <h2 style={{ fontSize: "18px", marginBottom: "10px" }}>Document Content</h2>
+//           <hr />
+//           <div style={{ fontSize: "12px", marginBottom: 30 }}>
+//             <div
+//               dangerouslySetInnerHTML={{
+//                 __html: `
+//                   <style>
+//                     table {
+//                       width: 100%;
+//                       border-collapse: collapse;
+//                       margin: 20px 0;
+//                       font-size: 12px;
+//                     }
+//                     th, td {
+//                       border: 1px solid #ccc;
+//                       padding: 8px;
+//                       text-align: left;
+//                       vertical-align: top;
+//                     }
+//                     th {
+//                       background-color: #f9f9f9;
+//                     }
+//                     tr {
+//                       page-break-inside: avoid;
+//                       break-inside: avoid;
+//                     }
+//                     p { margin: 8px 0; }
+//                   </style>
+//                   ${content}
+//                 `,
+//               }}
+//             />
+//           </div>
+
+//           <div style={{ pageBreakAfter: "always" }} />
+
+//           {/* ATTACHMENTS */}
+//           <h2 style={{ fontSize: "18px", marginBottom: "10px" }}>Attachments</h2>
+//           <ul>
+//             {attachments?.length
+//               ? attachments.map((file, idx) => <li key={idx}>{file.name}</li>)
+//               : <li>None</li>}
+//           </ul>
+
+//           <div style={{ pageBreakAfter: "always" }} />
+
+//           {/* VERSION HISTORY */}
+//           <h2 style={{ fontSize: "18px", marginBottom: "10px" }}>Version History</h2>
+//           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }} border="1" cellPadding="8" cellSpacing="0">
+//             <thead>
+//               <tr>
+//                 <th>Version</th>
+//                 <th>Updated By</th>
+//                 <th>Updated At</th>
+//                 <th>Baseline</th>
+//                 <th>Attachments</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {versions.map((v, i) => (
+//                 <tr key={i}>
+//                   <td>{v.versionNumber}</td>
+//                   <td>{v.updatedBy?.name || "-"}</td>
+//                   <td>{new Date(v.updatedAt).toLocaleString()}</td>
+//                   <td>{v.isBaselined ? "✅" : "❌"}</td>
+//                   <td>{v.attachments?.length || "-"}</td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
 //         </div>
 //       </div>
 //     </div>
@@ -423,6 +266,8 @@
 // };
 
 // export default DocumentDetails;
+
+
 
 import React, { useEffect, useState, useRef } from "react";
 import axios from "../api/axiosInstance";
@@ -436,19 +281,17 @@ const DocumentDetails = () => {
   const [loading, setLoading] = useState(true);
   const pdfRef = useRef();
 
-  const fetchDocument = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get(`/docs/${id}`);
-      setDocument(res.data);
-    } catch (err) {
-      console.error("Error fetching document", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchDocument = async () => {
+      try {
+        const res = await axios.get(`/docs/${id}`);
+        setDocument(res.data);
+      } catch (err) {
+        console.error("Error fetching document", err);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchDocument();
   }, [id]);
 
@@ -477,11 +320,7 @@ const DocumentDetails = () => {
       filename: `${title.replace(/\s+/g, "_")}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2 },
-      jsPDF: {
-        unit: "mm",
-        format: "a4",
-        orientation: "portrait",
-      },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
       pagebreak: { mode: ["css", "legacy"] },
     };
 
@@ -503,6 +342,16 @@ const DocumentDetails = () => {
       })
       .save();
   };
+
+  // Clean highlight handling
+  // const parsedContent = content?.replaceAll("<mark", "<span class='highlight'").replaceAll("</mark>", "</span>");
+
+      const parsedContent = content
+      ?.replace(/<mark(.*?)>/g, "<span class='highlight'>")  // Replace <mark> with <span>
+      .replace(/<\/mark>/g, "</span>")
+      .replace(/(?:^|(?<=\n))(?=[^<])/g, "<p>")              // Wrap orphan lines in <p>
+      .replace(/([^\n>])(?=\n|$)/g, "$1</p>");               // Close orphan lines with </p>
+
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -530,9 +379,18 @@ const DocumentDetails = () => {
 
       <div className="mb-6">
         <h2 className="text-lg font-semibold mb-2">Latest Content</h2>
+        <style>
+          {`
+            .prose ul, .prose ol { padding-left: 1.2rem; margin-bottom: 1rem; }
+            .prose li { margin-bottom: 6px; }
+            .prose table { width: 100%; border-collapse: collapse; }
+            .prose table, .prose th, .prose td { border: 1px solid #ccc; padding: 6px; }
+            .prose .highlight { background-color: #fff3a6; padding: 0 2px; }
+          `}
+        </style>
         <div
           className="prose max-w-full bg-white p-4 rounded border"
-          dangerouslySetInnerHTML={{ __html: content }}
+          dangerouslySetInnerHTML={{ __html: parsedContent }}
         />
       </div>
 
@@ -569,37 +427,40 @@ const DocumentDetails = () => {
         </table>
       </div>
 
-      {/* Hidden printable content */}
+      {/* PDF CONTENT */}
       <div style={{ display: "none" }}>
-        <div ref={pdfRef} style={{ backgroundColor: "#fff", fontFamily: "Arial, sans-serif", fontSize: "12px", color: "#000" }}>
+        <div ref={pdfRef} style={{ fontFamily: "Arial, sans-serif", fontSize: "12px", color: "#000", padding: "20px" }}>
+          <style>
+            {`
+              .highlight { background-color: #fff3a6; padding: 0 2px; display: inline;}
+              table { border-collapse: collapse; width: 100%; }
+              table, th, td { border: 1px solid #ccc; padding: 6px; }
+              ul, ol { padding-left: 20px; margin-bottom: 10px; }
+              li { margin-bottom: 6px; }
+              p { margin: 6px 0; line-height: 2.0;}
+            `}
+          </style>
 
           {/* COVER PAGE */}
-          <div style={{
-            padding: "60px 40px",
-            textAlign: "center",
-            backgroundColor: "#f8f9fa",
-            color: "#333"
-          }}>
+          <div style={{ textAlign: "center", paddingTop: "40px", pageBreakAfter: "always" }}>
             <img
               src="/assets/smhLogo.png"
               alt="SMH Logo"
-              style={{ width: "150px", height: "auto", marginBottom: "30px" }}
+              style={{ width: "150px", marginBottom: "30px" }}
               onError={(e) => { e.target.style.display = 'none'; }}
             />
-            <h1 style={{ fontSize: "36px", fontWeight: "bold", marginBottom: "20px" }}>{title}</h1>
-            <p style={{ fontSize: "20px", marginBottom: "40px" }}>{project?.name || 'Project Name Not Available'}</p>
-            <div style={{ fontSize: "16px", borderTop: "1px solid #ddd", paddingTop: "20px", width: "300px", margin: "0 auto" }}>
+            <h1 style={{ fontSize: "30px", fontWeight: "bold", marginBottom: "10px" }}>{title}</h1>
+            <p style={{ fontSize: "18px" }}>{project?.name}</p>
+            <div style={{ marginTop: "30px", fontSize: "14px" }}>
               <p>Document Type: {documentType}</p>
-              <p>Version: {latestVersion?.versionNumber || 'N/A'}</p>
-              <p>Generated: {new Date().toLocaleDateString()}</p>
+              <p>Version: {latestVersion?.versionNumber}</p>
+              <p>Generated On: {new Date().toLocaleDateString()}</p>
             </div>
           </div>
 
-          <div style={{ pageBreakAfter: "always" }} />
-
-          {/* DOCUMENT INFORMATION */}
+          {/* DOCUMENT INFO */}
           <h2 style={{ fontSize: "18px", marginBottom: "10px" }}>Document Information</h2>
-          <table style={{ width: "100%", marginBottom: "30px", borderCollapse: "collapse" }}>
+          <table>
             <tbody>
               <tr><td><strong>Document Type:</strong></td><td>{documentType}</td></tr>
               <tr><td><strong>Project:</strong></td><td>{project?.name}</td></tr>
@@ -614,56 +475,25 @@ const DocumentDetails = () => {
 
           <div style={{ pageBreakAfter: "always" }} />
 
-          {/* CONTENT */}
+          {/* CONTENT SECTION */}
           <h2 style={{ fontSize: "18px", marginBottom: "10px" }}>Document Content</h2>
-          <hr />
-          <div style={{ fontSize: "12px", marginBottom: 30 }}>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: `
-                  <style>
-                    table {
-                      width: 100%;
-                      border-collapse: collapse;
-                      margin: 20px 0;
-                      font-size: 12px;
-                    }
-                    th, td {
-                      border: 1px solid #ccc;
-                      padding: 8px;
-                      text-align: left;
-                      vertical-align: top;
-                    }
-                    th {
-                      background-color: #f9f9f9;
-                    }
-                    tr {
-                      page-break-inside: avoid;
-                      break-inside: avoid;
-                    }
-                    p { margin: 8px 0; }
-                  </style>
-                  ${content}
-                `,
-              }}
-            />
-          </div>
+          <div dangerouslySetInnerHTML={{ __html: parsedContent }} />
 
           <div style={{ pageBreakAfter: "always" }} />
 
           {/* ATTACHMENTS */}
           <h2 style={{ fontSize: "18px", marginBottom: "10px" }}>Attachments</h2>
           <ul>
-            {attachments?.length
-              ? attachments.map((file, idx) => <li key={idx}>{file.name}</li>)
-              : <li>None</li>}
+            {attachments?.length ? attachments.map((file, idx) => (
+              <li key={idx}>{file.name}</li>
+            )) : <li>None</li>}
           </ul>
 
           <div style={{ pageBreakAfter: "always" }} />
 
           {/* VERSION HISTORY */}
           <h2 style={{ fontSize: "18px", marginBottom: "10px" }}>Version History</h2>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }} border="1" cellPadding="8" cellSpacing="0">
+          <table>
             <thead>
               <tr>
                 <th>Version</th>
