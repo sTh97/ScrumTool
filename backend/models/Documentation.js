@@ -13,7 +13,7 @@ const documentationSchema = new mongoose.Schema(
     },
     documentType: {
       type: String,
-      enum: ["AS-IS", "BRD", "FSD", "HLD", "LLD", "API", "MOM", "OTHER"],
+      enum: ["AS-IS", "BRD", "FSD", "HLD", "LLD", "API", "MOM", "RELEASE NOTE", "OTHER"],
       required: true,
     },
     content: {

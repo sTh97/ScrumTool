@@ -150,7 +150,7 @@ const CreateDocument = () => {
               className="w-full border px-3 py-2 rounded"
             >
               <option value="">-- Select --</option>
-              {["AS-IS", "BRD", "FSD", "HLD", "LLD", "API", "MOM", "OTHER"].map((type) => (
+              {["AS-IS", "BRD", "FSD", "HLD", "LLD", "API", "MOM", "RELEASE NOTE", "OTHER"].map((type) => (
                 <option key={type}>{type}</option>
               ))}
             </select>

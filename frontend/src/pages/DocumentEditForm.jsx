@@ -420,7 +420,7 @@ const DocumentEdit = () => {
               onChange={(e) => setDocument({ ...document, documentType: e.target.value })}
               className="w-full border px-3 py-2 rounded"
             >
-              {["AS-IS", "BRD", "FSD", "HLD", "LLD", "API", "MOM", "OTHER"].map((type) => (
+              {["AS-IS", "BRD", "FSD", "HLD", "LLD", "API", "MOM", "RELEASE NOTE", "OTHER"].map((type) => (
                 <option key={type}>{type}</option>
               ))}
             </select>
