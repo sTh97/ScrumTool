@@ -6,16 +6,16 @@ const { authenticate } = require("../middlewares/authMiddleware");
 router.use(authenticate);
 
 // CREATE
-router.post("/", taskController.createTask);
+router.post("/", authenticate, taskController.createTask);
 
 // READ
-router.get("/", taskController.getAllTasks); // Optional query: ?sprintId=...&userStoryId=...
-router.get("/:id", taskController.getTaskById);
+router.get("/", authenticate, taskController.getAllTasks); // Optional query: ?sprintId=...&userStoryId=...
+router.get("/:id", authenticate, taskController.getTaskById);
 
 // UPDATE
-router.put("/:id", taskController.updateTask);
+router.put("/:id", authenticate, taskController.updateTask);
 
 // DELETE
-router.delete("/:id", taskController.deleteTask);
+router.delete("/:id", authenticate, taskController.deleteTask);
 
 module.exports = router;

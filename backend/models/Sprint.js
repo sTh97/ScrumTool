@@ -1,7 +1,4 @@
 // models/Sprint.js
-// /
-
-// models/Sprint.js
 
 const mongoose = require("mongoose");
 

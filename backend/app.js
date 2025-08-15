@@ -24,6 +24,8 @@ const prioritySeverityRoutes = require("./routes/prioritySeverityRoutes");
 const frequencyRoutes = require("./routes/frequencyRoutes");
 const lessonLearnedRoutes = require("./routes/lessonLearnedRoutes");
 const documentationRoutes = require('./routes/documentationRoutes');
+const otherTaskTypesRoutes = require("./routes/otherTaskTypes.routes");
+const otherTasksRoutes = require("./routes/otherTasks.routes");
 
 
 
@@ -36,12 +38,6 @@ dotenv.config();
 const app = express();
 
 // Middleware
-// app.use(cors());
-// app.use(cors({
-//   origin: ['http://al.3em.tech'],
-//   credentials: true, // if you're using cookies or sessions
-// }));
-
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl)
@@ -76,6 +72,8 @@ app.use("/api/priority-severity", prioritySeverityRoutes);
 app.use("/api/frequency", frequencyRoutes);
 app.use("/api/lesson-learned", lessonLearnedRoutes);
 app.use('/api/docs', documentationRoutes);
+app.use("/api/other-task-types", otherTaskTypesRoutes);
+app.use("/api/other-tasks", otherTasksRoutes);
 
 // app.use("/uploads", express.static("uploads"));
 app.use("/uploads/lesson-files", express.static(path.join(__dirname, "uploads/lesson-files")));

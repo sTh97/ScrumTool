@@ -3,18 +3,25 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import ChangePassword from "../pages/ChangePassword"; //added
+
 
 const Layout = ({ children }) => {
   const { user, logout } = useAuth();
   const [isMasterConfigOpen, setIsMasterConfigOpen] = useState(true);
   const [isLessonLearnedOpen, setIsLessonLearnedOpen] = useState(true);
+  const [showChangePwd, setShowChangePwd] = useState(false); //added
   const location = useLocation();
   const timestamp = new Date().toLocaleString();
 
   const hasPermission = (perm) => {
-    console.log(perm, user)
+    // console.log(perm, user)
     return user?.roles?.some((role) => role.permissions.includes("*") || role.permissions.includes(perm));
   };
+
+  const isAdmin = user?.roles?.some(
+    (r) => ["Admin", "System Administrator"].includes(r?.name)
+  );
 
   if (!user) return null;
   return (
@@ -23,15 +30,17 @@ const Layout = ({ children }) => {
       <aside className="w-64 bg-gray-800 text-white p-4">
         <h2 className="text-xl font-bold mb-6">ActionLoop</h2>
       <nav className="space-y-2">
-        <Link to="/dashboard" className={linkClass(location.pathname === "/dashboard")}>
-          Dashboard
-        </Link>
-
+        {hasPermission("view_dashboard") && (
+                    <Link to="/dashboard" className={linkClass(location.pathname === "/dashboard")}>
+                      Dashboard
+                    </Link>
+        )}
         {/* Master Configuration Collapsible Section */}
         {(hasPermission("manage_roles") || 
           hasPermission("manage_users") || 
           hasPermission("manage_projects") || 
-          hasPermission("manage_estimations")) && (
+          hasPermission("manage_estimations")|| 
+          hasPermission("other_tasks_type") ) && (
           <div className="pt-4">
             <button
               onClick={() => setIsMasterConfigOpen(!isMasterConfigOpen)}
@@ -75,6 +84,11 @@ const Layout = ({ children }) => {
                   <Link to="/estimations" className={linkClass(location.pathname === "/estimations")}>
                     T-Shirt Sizing
                   </Link>
+                )}
+                {hasPermission("other_tasks_type") && (
+                    <Link to="/OtherTaskTypes" className={linkClass(location.pathname === "/OtherTaskTypes")}>
+                      Other Task Types
+                    </Link>
                 )}
               </div>
             </div>
@@ -217,6 +231,11 @@ const Layout = ({ children }) => {
                       Lesson Learn List
                     </Link>
                   )}
+                  {hasPermission("other_tasks_list") && (
+                    <Link to="/OtherTasksList" className={linkClass(location.pathname === "/OtherTasksList")}>
+                      Other Tasks List
+                    </Link>
+                  )}
       </nav>
 
       </aside>
@@ -225,7 +244,18 @@ const Layout = ({ children }) => {
       <div className="flex-1 flex flex-col">
         <header className="bg-white shadow p-4 flex justify-between items-center">
           <span className="text-xl font-semibold">Welcome, {user?.name}</span>
-          <button onClick={logout} className="bg-red-500 text-white px-4 py-1 rounded">Logout</button>
+          <div className="flex items-center gap-2">
+            {/* Show Change Password for non-admins (optional; backend already enforces) */}
+            {!isAdmin && (
+              <button
+                onClick={() => setShowChangePwd(true)}
+                className="bg-gray-900 text-white px-4 py-1 rounded"
+              >
+                Change Password
+              </button>
+            )}
+            <button onClick={logout} className="bg-red-500 text-white px-4 py-1 rounded">Logout</button>
+          </div>  
         </header>
 
         <main className="flex-1 p-6 overflow-auto bg-gray-50">{children}</main>
@@ -234,6 +264,20 @@ const Layout = ({ children }) => {
           Last updated: {timestamp}
         </footer>
       </div>
+       {/* Modal */}
+      {showChangePwd && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* backdrop */}
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setShowChangePwd(false)}
+          />
+          {/* content */}
+          <div className="relative z-10">
+            <ChangePassword onClose={() => setShowChangePwd(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

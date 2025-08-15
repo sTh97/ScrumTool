@@ -28,6 +28,8 @@ import CreateDocument from "./pages/CreateDocument"
 import DocumentsList from "./pages/DocumentsList"
 import DocumentDetails from "./pages/DocumentDetails"
 import DocumentEdit from "./pages/DocumentEditForm"
+import OtherTasksList from "./pages/OtherTasksList";
+import OtherTaskTypes from "./pages/OtherTaskTypes";
 import Layout from "./components/Layout";
 
 const App = () => {
@@ -263,6 +265,23 @@ const App = () => {
         </ProtectedRoute>
       }
     />  
+
+    <Route 
+      path="/OtherTasksList" 
+      element={
+        <ProtectedRoute>
+          <Layout><OtherTasksList/></Layout>
+        </ProtectedRoute>
+      } 
+    />
+    <Route 
+      path="/OtherTaskTypes" 
+      element={
+        <ProtectedRoute>
+          <Layout><OtherTaskTypes/></Layout>
+        </ProtectedRoute>
+      } 
+    />
 
     </Routes>
     

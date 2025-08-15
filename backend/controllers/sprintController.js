@@ -128,56 +128,6 @@ exports.getAllSprints = async (req, res) => {
   }
 };
 
-// exports.getAllSprintsPagination = async (req, res) => {
-//   try {
-//     const { search = "", page = 1, limit = 3 } = req.query;
-
-//     const query = {
-//       $or: [
-//         { name: { $regex: search, $options: "i" } },
-//       ]
-//     };
-
-//     // Search for matching Users, Epics, Projects, User Stories
-//     const [users, epics, projects, stories] = await Promise.all([
-//       User.find({ name: { $regex: search, $options: "i" } }).select("_id"),
-//       Epic.find({ name: { $regex: search, $options: "i" } }).select("_id"),
-//       Project.find({ name: { $regex: search, $options: "i" } }).select("_id"),
-//       UserStory.find({ title: { $regex: search, $options: "i" } }).select("_id"),
-//     ]);
-
-//     // If matches found, expand the $or condition
-//     if (users.length > 0 || epics.length > 0 || projects.length > 0 || stories.length > 0) {
-//       query.$or.push(
-//         { teamMembers: { $in: users.map(u => u._id) } },
-//         { epic: { $in: epics.map(e => e._id) } },
-//         { project: { $in: projects.map(p => p._id) } },
-//         { "userStories.storyId": { $in: stories.map(s => s._id) } }
-//       );
-//     }
-
-//     const sprints = await Sprint.find(query)
-//       .populate("project")
-//       .populate("epic")
-//       .populate("teamMembers")
-//       .populate("userStories.storyId")
-//       .sort({ createdAt: -1 })
-//       .skip((page - 1) * limit)
-//       .limit(parseInt(limit));
-
-//     const total = await Sprint.countDocuments(query);
-
-//     res.status(200).json({
-//       sprints,
-//       total,
-//       page: parseInt(page),
-//       totalPages: Math.ceil(total / limit),
-//     });
-//   } catch (err) {
-//     console.error("Error fetching sprints:", err);
-//     res.status(500).json({ message: "Error fetching sprints", error: err.message });
-//   }
-// };
 
 
 

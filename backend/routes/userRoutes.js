@@ -7,7 +7,8 @@ const {
   getAllUsers,
   updateUser,
   deactivateUser,
-  reactivateUser
+  reactivateUser,
+  changeMyPassword 
 } = require("../controllers/userController");
 
 router.post("/", authenticate,  createUser);
@@ -15,6 +16,7 @@ router.get("/", authenticate,  getAllUsers);
 router.put("/:id", authenticate,  updateUser);
 router.put("/deactivate/:id", authenticate, authorizeAdmin, deactivateUser);
 router.put("/reactivate/:id", authenticate, reactivateUser);
+router.patch("/me/password", authenticate, changeMyPassword);
 
 
 module.exports = router;

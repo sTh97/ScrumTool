@@ -20,16 +20,43 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
+  // const login = async (email, password) => {
+  //   const res = await axios.post("/auth/login", { email, password });
+  //   localStorage.setItem("token", res.data.token);
+  //   setToken(res.data.token);
+  //   setUser(res.data.user);
+  //   return res.data.user;
+  // };
+
+
+  // src/context/AuthContext.jsx
   const login = async (email, password) => {
     const res = await axios.post("/auth/login", { email, password });
-    localStorage.setItem("token", res.data.token);
-    setToken(res.data.token);
-    setUser(res.data.user);
-    return res.data.user;
+
+    // DEBUG: make sure the backend really returned a token
+    console.log("[login] response:", res.data);
+
+    const { token, user } = res.data || {};
+    if (!token) {
+      // If this ever happens, the server didn't send a token for this user
+      throw new Error("Login succeeded but no token returned.");
+    }
+
+    // Write token BEFORE anything else so interceptors pick it up
+    localStorage.setItem("token", token);
+    setToken(token);
+    setUser(user);
+
+    // DEBUG: confirm it's in storage
+    console.log("[login] token saved?", !!localStorage.getItem("token"));
+
+    return user;
   };
+
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     setUser(null);
     setToken(null);
     setLoading(false);

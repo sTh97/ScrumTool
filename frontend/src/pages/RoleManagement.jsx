@@ -200,6 +200,8 @@ const permissionOptions = [
   { label: "Lesson Learn List", value: "lesson_learned_List" },
   { label: "Create Document", value: "create_document" },
   { label: "Documents List", value: "document_list" },
+  { label: "Other Task Types", value: "other_tasks_type" },
+  { label: "Other Tasks List", value: "other_tasks_list" },
 ];
 
 const RoleManagement = () => {

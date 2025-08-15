@@ -12,6 +12,8 @@ const SprintDetails = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [expandedStories, setExpandedStories] = useState({});
   const [expandedTasks, setExpandedTasks] = useState({});
+  const [showDetailsDrawer, setShowDetailsDrawer] = useState(false);
+  const [showChatDrawer, setShowChatDrawer] = useState(false);
   const [newTask, setNewTask] = useState({
     title: "",
     description: "",
@@ -416,7 +418,7 @@ const SprintDetails = () => {
                       </div>
                     </div>
 
-                    {/* Tasks Section */}
+                   {/* Story Details Grid */}
                     <div className="p-6">
                       <h4 className="font-semibold text-gray-900 mb-4">Tasks</h4>
                       {tasksByStory[story.storyId._id]?.length > 0 ? (
@@ -477,117 +479,216 @@ const SprintDetails = () => {
                               </div>
 
                               {/* Expanded Task Content */}
-                              {expandedTasks[task._id] && (
-                                <div className="border-t bg-gray-50 p-4 space-y-4">
-                                  <div>
-                                    <p className="text-sm text-gray-700">{task.description}</p>
-                                  </div>
-
-                                  {/* Change Log */}
-                                  {task.changeLog?.length > 0 && (
-                                    <div className="bg-amber-50 rounded-lg p-3">
-                                      <h6 className="font-medium text-amber-800 mb-2 flex items-center">
-                                        <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                          <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-                                        </svg>
-                                        Change Log
-                                      </h6>
-                                      <div className="max-h-32 overflow-y-auto space-y-1">
-                                        {[...task.changeLog].reverse().map((log, index) => (
-                                          <div key={index} className="text-xs bg-white rounded p-2">
-                                            <span className="font-medium text-blue-600">{log.field}</span> changed 
-                                            from <span className="text-red-600 font-mono">{renderValue(log.field, log.oldValue)}</span> to{" "}
-                                            <span className="text-green-600 font-mono">{renderValue(log.field, log.newValue)}</span>
-                                            <div className="text-gray-500 mt-1">
-                                              by {resolveUserName(log.changedBy)} • {new Date(log.changedAt).toLocaleString()}
-                                            </div>
+                              
+                               {expandedTasks[task._id] && (
+                                  <div className="border-t bg-gray-50 p-4">
+                                    {/* Main Content Area with 60/40 ratio */}
+                                    <div className="flex space-x-4">
+                                      {/* Left Section - 60% */}
+                                      <div className="flex-[4] space-y-4">
+                                        {/* Story Details Grid */}
+                                        <div className="bg-white rounded-lg p-4 shadow-sm">
+                                          <h6 className="font-medium text-gray-800 mb-3 flex items-center">
+                                            <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                              <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clipRule="evenodd" />
+                                            </svg>
+                                            Story Details
+                                          </h6>
+                                          <div>
+                                            <p className="text-sm text-gray-700">{task.description}</p>
                                           </div>
-                                        ))}
+                                        </div>
+                                      </div>
+
+                                      {/* Right Section - 40% */}
+                                      <div className="flex-[1] space-y-4">
+                                        {/* Story Details Grid (Right Side) */}
+                                        <div className="bg-white rounded-lg p-4 shadow-sm">
+                                          <h6 className="font-medium text-gray-800 mb-3">Additional Details</h6>
+                                          {/* Add your right side story details content here */}
+                                          <p className="text-sm text-gray-600">Right side story details content...</p>
+                                        </div>
+
+                                        {/* Action Buttons */}
+                                        <div className="flex flex-col space-y-2">
+                                          <button
+                                            onClick={() => setShowDetailsDrawer(!showDetailsDrawer)}
+                                            className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center"
+                                          >
+                                            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                              <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+                                            </svg>
+                                            View Details & Sessions
+                                          </button>
+                                          
+                                          <button
+                                            onClick={() => setShowChatDrawer(!showChatDrawer)}
+                                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center"
+                                          >
+                                            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                              <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
+                                            </svg>
+                                            Open Chat
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
-                                  )}
 
-                                  {/* Active Sessions */}
-                                  <div className="bg-indigo-50 rounded-lg p-3">
-                                    <h6 className="font-medium text-indigo-800 mb-2 flex items-center">
-                                      <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                                      </svg>
-                                      Time Tracking
-                                    </h6>
-                                    {task.activeSessions?.length > 0 ? (
-                                      <div className="max-h-32 overflow-y-auto space-y-1">
-                                        {task.activeSessions.map((session, i) => (
-                                          <div key={i} className="text-xs bg-white rounded p-2">
-                                            <div className="flex items-center justify-between">
-                                              <span>
-                                                {new Date(session.from).toLocaleString()} → {" "}
-                                                {session.to ? new Date(session.to).toLocaleString() : "Ongoing"}
-                                              </span>
-                                              {session.to && (
-                                                <span className="font-mono text-indigo-600">
-                                                  {formatDuration(session.from, session.to)}
-                                                </span>
-                                              )}
+                                    {/* Details Side Drawer - Change Log & Active Sessions */}
+                                    {showDetailsDrawer && (
+                                      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
+                                        <div className="bg-white w-96 h-full shadow-xl overflow-hidden flex flex-col min-h-0">
+                                          {/* Header */}
+                                          <div className="bg-gray-800 text-white p-4 flex items-center justify-between shrink-0">
+                                            <h5 className="font-medium">Details & Sessions</h5>
+                                            <button onClick={() => setShowDetailsDrawer(false)} className="text-gray-300 hover:text-white">
+                                              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                              </svg>
+                                            </button>
+                                          </div>
+
+                                          {/* Content - strict 50/50 split with independent scrolling */}
+                                          <div className="flex-1 flex flex-col min-h-0">
+                                            {/* Change Log */}
+                                            <div className="basis-1/2 min-h-0 p-4 border-b">
+                                              <div className="bg-amber-50 rounded-lg p-3 h-full">
+                                                <h6 className="font-medium text-amber-800 mb-2 flex items-center">
+                                                  <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M3 4..." clipRule="evenodd" />
+                                                  </svg>
+                                                  Change Log
+                                                </h6>
+                                                <div className="h-full overflow-y-auto space-y-2">
+                                                  {task.changeLog?.length ? (
+                                                    [...task.changeLog].reverse().map((log, i) => (
+                                                      <div key={i} className="text-xs bg-white rounded p-2 shadow-sm">
+                                                        <span className="font-medium text-blue-600">{log.field}</span> changed from{" "}
+                                                        <span className="text-red-600 font-mono">{renderValue(log.field, log.oldValue)}</span> to{" "}
+                                                        <span className="text-green-600 font-mono">{renderValue(log.field, log.newValue)}</span>
+                                                        <div className="text-gray-500 mt-1">
+                                                          by {resolveUserName(log.changedBy)} • {new Date(log.changedAt).toLocaleString()}
+                                                        </div>
+                                                      </div>
+                                                    ))
+                                                  ) : (
+                                                    <div className="h-full flex items-center justify-center">
+                                                      <p className="text-amber-600 text-sm">No change log entries</p>
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              </div>
+                                            </div>
+
+                                            {/* Time Tracking */}
+                                            <div className="basis-1/2 min-h-0 p-4">
+                                              <div className="bg-indigo-50 rounded-lg p-3 h-full">
+                                                <h6 className="font-medium text-indigo-800 mb-2 flex items-center">
+                                                  <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M10 18..." clipRule="evenodd" />
+                                                  </svg>
+                                                  Time Tracking
+                                                </h6>
+                                                <div className="h-full overflow-y-auto space-y-2">
+                                                  {task.activeSessions?.length ? (
+                                                    task.activeSessions.map((s, i) => (
+                                                      <div key={i} className="text-xs bg-white rounded p-2 shadow-sm">
+                                                        <div className="flex items-center justify-between">
+                                                          <span>
+                                                            {new Date(s.from).toLocaleString()} → {s.to ? new Date(s.to).toLocaleString() : "Ongoing"}
+                                                          </span>
+                                                          {s.to && <span className="font-mono text-indigo-600">{formatDuration(s.from, s.to)}</span>}
+                                                        </div>
+                                                      </div>
+                                                    ))
+                                                  ) : (
+                                                    <div className="h-full flex items-center justify-center">
+                                                      <p className="text-xs text-indigo-600">No tracked sessions</p>
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              </div>
                                             </div>
                                           </div>
-                                        ))}
+                                        </div>
                                       </div>
-                                    ) : (
-                                      <p className="text-xs text-indigo-600">No tracked sessions</p>
+                                    )}
+
+
+                                    {/* Chat Side Drawer */}
+                                    {showChatDrawer && (
+                                      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
+                                        <div className="bg-white w-96 h-full shadow-xl overflow-hidden flex flex-col">
+                                          {/* Header */}
+                                          <div className="bg-blue-800 text-white p-4 flex items-center justify-between">
+                                            <h5 className="font-medium flex items-center">
+                                              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
+                                              </svg>
+                                              Team Chat
+                                            </h5>
+                                            <button
+                                              onClick={() => setShowChatDrawer(false)}
+                                              className="text-blue-200 hover:text-white"
+                                            >
+                                              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                              </svg>
+                                            </button>
+                                          </div>
+
+                                          {/* Chat Messages */}
+                                          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                                            {[...(task.chatHistory || [])].reverse().map((msg, idx) => (
+                                              <div key={idx} className="bg-gray-50 rounded-lg p-3 shadow-sm">
+                                                <div className="flex items-center justify-between mb-2">
+                                                  <span className="font-medium text-blue-700 text-sm">
+                                                    {msg.addedBy?.name || 'User'}
+                                                  </span>
+                                                  <span className="text-gray-400 text-xs">
+                                                    {new Date(msg.timestamp).toLocaleString()}
+                                                  </span>
+                                                </div>
+                                                <p className="text-sm text-gray-700">{msg.message}</p>
+                                              </div>
+                                            ))}
+                                            {(!task.chatHistory || task.chatHistory.length === 0) && (
+                                              <div className="flex items-center justify-center h-full">
+                                                <p className="text-gray-500 text-sm">No messages yet. Start the conversation!</p>
+                                              </div>
+                                            )}
+                                          </div>
+
+                                          {/* Chat Input */}
+                                          <div className="border-t bg-gray-50 p-4">
+                                            <div className="flex items-center space-x-2">
+                                              <input
+                                                type="text"
+                                                placeholder="Type a message..."
+                                                value={chatInputs[task._id] || ""}
+                                                onChange={(e) => handleChatInputChange(task._id, e.target.value)}
+                                                className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                onKeyPress={(e) => {
+                                                  if (e.key === 'Enter') {
+                                                    handleSendChat(task._id, story.storyId._id);
+                                                  }
+                                                }}
+                                              />
+                                              <button
+                                                onClick={() => handleSendChat(task._id, story.storyId._id)}
+                                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                                              >
+                                                Send
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
                                     )}
                                   </div>
+                                )}       
 
-                                  {/* Chat Section */}
-                                  <div className="bg-blue-50 rounded-lg p-3">
-                                    <h6 className="font-medium text-blue-800 mb-3 flex items-center">
-                                      <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
-                                      </svg>
-                                      Team Chat
-                                    </h6>
-                                    
-                                    {/* Chat Messages */}
-                                    <div className="max-h-40 overflow-y-auto mb-3 space-y-2">
-                                      {[...(task.chatHistory || [])].reverse().map((msg, idx) => (
-                                        <div key={idx} className="bg-white rounded-lg p-2 shadow-sm">
-                                          <div className="flex items-center justify-between mb-1">
-                                            <span className="font-medium text-blue-700 text-xs">
-                                              {msg.addedBy?.name || 'User'}
-                                            </span>
-                                            <span className="text-gray-400 text-xs">
-                                              {new Date(msg.timestamp).toLocaleString()}
-                                            </span>
-                                          </div>
-                                          <p className="text-sm text-gray-700">{msg.message}</p>
-                                        </div>
-                                      ))}
-                                    </div>
 
-                                    {/* Chat Input */}
-                                    <div className="flex items-center space-x-2">
-                                      <input
-                                        type="text"
-                                        placeholder="Type a message..."
-                                        value={chatInputs[task._id] || ""}
-                                        onChange={(e) => handleChatInputChange(task._id, e.target.value)}
-                                        className="flex-1 border border-blue-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        onKeyPress={(e) => {
-                                          if (e.key === 'Enter') {
-                                            handleSendChat(task._id, story.storyId._id);
-                                          }
-                                        }}
-                                      />
-                                      <button
-                                        onClick={() => handleSendChat(task._id, story.storyId._id)}
-                                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                                      >
-                                        Send
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
                             </div>
                           ))}
                         </div>
@@ -767,7 +868,7 @@ const SprintDetails = () => {
                   </select>
                 </div>
 
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
                   <select
                     value={editTask.status}
@@ -778,7 +879,48 @@ const SprintDetails = () => {
                       <option key={status} value={status}>{status}</option>
                     ))}
                   </select>
+                </div> */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                  <select
+                    value={editTask.status}
+                    onChange={(e) => setEditTask({ ...editTask, status: e.target.value })}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    {(() => {
+                      const normalize = (s) => String(s || "").trim().toLowerCase();
+                      const STATUSES = ["To Do", "In Progress", "Paused", "Done", "Discarded"];
+
+                      const canTransition = (from, to) => {
+                        const f = normalize(from);
+                        const t = normalize(to);
+                        if (f === "to do")        return t === "in progress" || t === "discarded";
+                        if (f === "in progress")  return t === "paused" || t === "done" || t === "discarded";
+                        if (f === "paused")       return t === "in progress" || t === "discarded";
+                        if (f === "done")         return t === "in progress" || t === "discarded";
+                        return false;
+                      };
+
+                      const allowed = STATUSES.filter((s) => canTransition(editTask.status, s));
+
+                      return (
+                        <>
+                          {/* keep current status visible but not selectable */}
+                          <option value={editTask.status} disabled>
+                            {editTask.status} (current)
+                          </option>
+                          {allowed.map((s) => (
+                            <option key={s} value={s}>
+                              {s}
+                            </option>
+                          ))}
+                        </>
+                      );
+                    })()}
+                  </select>
                 </div>
+
+
               </div>
 
               <div className="flex justify-end space-x-3 mt-6 pt-6 border-t">
