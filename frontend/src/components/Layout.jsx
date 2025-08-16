@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import ChangePassword from "../pages/ChangePassword"; //added
+import ChangePassword from "../pages/ChangePassword";
+import ChatWidget from "./chat/ChatWidget";
+
 
 
 const Layout = ({ children }) => {
@@ -278,6 +280,9 @@ const Layout = ({ children }) => {
           </div>
         </div>
       )}
+
+      <ChatWidget />
+
     </div>
   );
 };

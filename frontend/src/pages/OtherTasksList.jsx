@@ -938,16 +938,16 @@ const estimationBadge = (planned, actual) => {
   if (p <= 0) return null;
   const ratio = a / p;
 
-  if (ratio <= 0.5) {
-    return {
-      key: "very-over",
-      text: "Very Over Estimated",
-      className: "bg-fuchsia-100 text-fuchsia-700 ring-1 ring-fuchsia-200",
-      tone: "over",
-      ratio,
-    };
-  }
-  if (ratio <= 0.75) {
+  // if (ratio <= 0.5) {
+  //   return {
+  //     key: "very-over",
+  //     text: "Very Over Estimated",
+  //     className: "bg-fuchsia-100 text-fuchsia-700 ring-1 ring-fuchsia-200",
+  //     tone: "over",
+  //     ratio,
+  //   };
+  // }
+  if (ratio <= 0.4) {
     return {
       key: "over",
       text: "Over Estimated",
