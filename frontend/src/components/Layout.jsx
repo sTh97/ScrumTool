@@ -192,7 +192,11 @@ const Layout = ({ children }) => {
                       Documents List
                     </Link>
                   )}
-                  
+                  {hasPermission("other_tasks_list") && (
+                    <Link to="/OtherTasksList" className={linkClass(location.pathname === "/OtherTasksList")}>
+                      Other Tasks List
+                    </Link>
+                  )}
                   {hasPermission("manage_epics") && (
                     <Link to="/epics" className={linkClass(location.pathname === "/epics")}>
                       Epic Management
@@ -233,11 +237,7 @@ const Layout = ({ children }) => {
                       Lesson Learn List
                     </Link>
                   )}
-                  {hasPermission("other_tasks_list") && (
-                    <Link to="/OtherTasksList" className={linkClass(location.pathname === "/OtherTasksList")}>
-                      Other Tasks List
-                    </Link>
-                  )}
+                  
       </nav>
 
       </aside>
