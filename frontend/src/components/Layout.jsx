@@ -237,6 +237,26 @@ const Layout = ({ children }) => {
                       Lesson Learn List
                     </Link>
                   )}
+                  {hasPermission("Schema_Compare") && (
+                    <Link to="/SchemaCompare" className={linkClass(location.pathname === "/SchemaCompare")}>
+                      Schema Compare
+                    </Link>
+                  )}
+                  {hasPermission("Schema_Comparison_List") && (
+                    <Link to="/SchemaComparisonList" className={linkClass(location.pathname === "/SchemaComparisonList")}>
+                      Schema Comparison List
+                    </Link>
+                  )}
+                  {hasPermission("Project_Workspace") && (() => {
+                    const active =
+                      location.pathname.startsWith("/workspaces") ||
+                      /^\/projects\/[^/]+$/.test(location.pathname); // e.g. /projects/:id
+                    return (
+                      <Link to="/workspaces" className={linkClass(active)}>
+                        Project Workspace
+                      </Link>
+                    );
+                  })()}
                   
       </nav>
 

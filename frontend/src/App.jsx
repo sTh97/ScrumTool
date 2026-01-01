@@ -30,6 +30,12 @@ import DocumentDetails from "./pages/DocumentDetails"
 import DocumentEdit from "./pages/DocumentEditForm"
 import OtherTasksList from "./pages/OtherTasksList";
 import OtherTaskTypes from "./pages/OtherTaskTypes";
+import SchemaCompare from "./pages/SchemaCompare";
+import Workspaces from "./pages/Workspaces";
+import WorkspaceForm from "./pages/WorkspaceForm";
+import ProjectWorkspace from "./pages/ProjectWorkspace";
+import SchemaComparisonDetail from "./pages/SchemaComparisonDetail";
+import SchemaComparisonList from "./pages/SchemaComparisonList";
 import Layout from "./components/Layout";
 
 const App = () => {
@@ -281,6 +287,70 @@ const App = () => {
           <Layout><OtherTaskTypes/></Layout>
         </ProtectedRoute>
       } 
+    />
+
+   <Route 
+    path="/SchemaCompare" 
+    element=
+      {
+        <ProtectedRoute>
+          <Layout><SchemaCompare/></Layout>
+        </ProtectedRoute>
+      } 
+    />
+   <Route 
+    path="/SchemaComparisonList" 
+    element=
+      {
+        <ProtectedRoute>
+          <Layout><SchemaComparisonList /></Layout>
+        </ProtectedRoute>
+      } 
+    />
+   <Route 
+    path="/schema/comparisons/:id" 
+    element=
+      {
+        <ProtectedRoute>
+          <Layout><SchemaComparisonDetail /></Layout>
+        </ProtectedRoute>
+      } 
+    />
+    <Route
+      path="/workspaces"
+      element={
+        <ProtectedRoute>
+          <Layout><Workspaces /></Layout>
+        </ProtectedRoute>
+      }
+    />
+
+    <Route
+      path="/workspaces/new"
+      element={
+        <ProtectedRoute>
+          <Layout><WorkspaceForm /></Layout>
+        </ProtectedRoute>
+      }
+    />
+
+    <Route
+      path="/workspaces/:id/edit"
+      element={
+        <ProtectedRoute>
+          <Layout><WorkspaceForm /></Layout>
+        </ProtectedRoute>
+      }
+    />
+
+    {/* Wrap the ProjectWorkspace in Layout for consistent header/sidebar */}
+    <Route
+      path="/projects/:id"
+      element={
+        <ProtectedRoute>
+          <Layout><ProjectWorkspace /></Layout>
+        </ProtectedRoute>
+      }
     />
 
     </Routes>
