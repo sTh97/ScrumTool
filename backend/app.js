@@ -39,6 +39,7 @@ const schemaRoutes = require('./routes/schemaRoutes');
 const otherTasksAnalyticsRoutes = require("./routes/otherTasks.analytics.routes");
 const projectWorkspaceRoutes = require('./routes/projectWorkspaceRoutes')
 const projectTaskRoutes = require('./routes/projectTaskRoutes')
+const demoRequestRoutes = require("./routes/demoRequestRoutes");
 
 
 // ★ ADDED: Chat routes + socket handlers
@@ -114,6 +115,7 @@ app.use('/api/project-tasks', projectTaskRoutes);
 
 // ★ ADDED: Chat API mount (kept at the end of your current route block)
 app.use("/api/chat", chatRoutes);
+app.use("/api/demo-requests", demoRequestRoutes);
 
 // app.use("/uploads", express.static("uploads"));
 app.use("/uploads/lesson-files", express.static(path.join(__dirname, "uploads/lesson-files")));

@@ -37,6 +37,10 @@ import ProjectWorkspace from "./pages/ProjectWorkspace";
 import SchemaComparisonDetail from "./pages/SchemaComparisonDetail";
 import SchemaComparisonList from "./pages/SchemaComparisonList";
 import Layout from "./components/Layout";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import DemoRequestsPage from "./pages/admin/DemoRequestsPage";
+import AdminProtectedRoute from "./routes/AdminProtectedRoute";
 
 const App = () => {
   return (
@@ -47,6 +51,24 @@ const App = () => {
     {/* <Route path="/login" element={<Navigate to="/login" />} /> */}
 
     <Route path="/login" element={<LoginPage />} />
+
+    <Route path="/admin/login" element={<AdminLogin />} />
+    <Route
+      path="/admin"
+      element={
+        <AdminProtectedRoute>
+          <AdminDashboard />
+        </AdminProtectedRoute>
+      }
+    />
+    <Route
+      path="/admin/requests"
+      element={
+        <AdminProtectedRoute>
+          <DemoRequestsPage />
+        </AdminProtectedRoute>
+      }
+    />
 
     <Route
   path="/dashboard"

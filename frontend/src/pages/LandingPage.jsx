@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import TypingText from "../components/TypingText";
 import { Link } from "react-scroll";
+import { submitDemoRequest } from "../api/demoRequestApi";
 // import Typical from "react-typical";
 
 import estimationImg from "../assets/estimationManagement.png";
@@ -22,12 +23,26 @@ const LandingPage = () => {
     message: "",
   });
 
+  const [submitting, setSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Request submitted! Backend functionality coming soon.");
+    setSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      await submitDemoRequest(form);
+      setSubmitStatus("success");
+      setForm({ name: "", email: "", company: "", contact: "", message: "" });
+    } catch {
+      setSubmitStatus("error");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const featureCards = [
@@ -61,17 +76,6 @@ const LandingPage = () => {
     "Continuous improvement through lessons learned",
   ];
 
-  const smhHighlights = [
-    "Industry Expertise",
-    "Customized Solutions",
-    "Proven Track Record",
-    "Comprehensive Services",
-    "Cutting-Edge Technology",
-    "Customer-Centric Approach",
-    "Enhanced Efficiency",
-    "Robust Security",
-  ];
-
   return (
     <div className="font-sans bg-black text-white scroll-smooth">
       {/* Header */}
@@ -81,7 +85,7 @@ const LandingPage = () => {
             ActionLoop
           </h1>
           <nav className="space-x-6 text-sm">
-            {["about", "features", "workflow", "benefits", "smh", "demo"].map(
+            {["about", "features", "workflow", "benefits", "demo"].map(
               (sec, i) => (
                 <Link
                   key={i}
@@ -262,40 +266,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* SMH Global */}
-      <section
-        id="smh"
-        className="bg-gradient-to-r from-yellow-100 via-white to-blue-100 py-20 px-6 text-black"
-      >
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-6 text-[#003366]">
-            SMH Global Services
-          </h2>
-          <p className="max-w-3xl mx-auto text-lg text-gray-800 mb-10">
-            At SMH Global Services, we understand that choosing the right
-            partner for your IT and business solutions is crucial for success.
-            With a proven track record of excellence, industry expertise, and a
-            customer-centric approach, we are dedicated to delivering tailored
-            solutions that meet your unique needs and drive your business
-            forward.
-          </p>
-          <div className="grid md:grid-cols-2 gap-8">
-            {smhHighlights.map((item, i) => (
-              <motion.div
-                key={i}
-                className="bg-white border-l-4 border-red-500 p-6 rounded-lg shadow hover:shadow-md transition-all"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: i * 0.1 }}
-              >
-                <p className="text-lg font-semibold text-[#003366]">{item}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Demo Form */}
       <section id="demo" className="bg-black py-20 px-6">
         <div className="max-w-3xl mx-auto">
@@ -303,6 +273,16 @@ const LandingPage = () => {
             <h2 className="text-3xl font-bold text-center text-white mb-6">
               Request a Demo
             </h2>
+            {submitStatus === "success" && (
+              <div className="mb-4 p-4 bg-green-900/50 border border-green-600 rounded-lg text-green-300 text-sm text-center">
+                Thank you! Your demo request has been submitted. We'll be in touch soon.
+              </div>
+            )}
+            {submitStatus === "error" && (
+              <div className="mb-4 p-4 bg-red-900/50 border border-red-600 rounded-lg text-red-300 text-sm text-center">
+                Something went wrong. Please try again later.
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <input
@@ -349,9 +329,10 @@ const LandingPage = () => {
               />
               <button
                 type="submit"
-                className="w-full bg-red-600 hover:bg-red-500 text-white font-semibold py-3 rounded transition-all"
+                disabled={submitting}
+                className="w-full bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white font-semibold py-3 rounded transition-all"
               >
-                Submit Request
+                {submitting ? "Submitting..." : "Submit Request"}
               </button>
             </form>
           </div>
@@ -361,8 +342,7 @@ const LandingPage = () => {
       {/* Footer */}
       <footer className="bg-black text-white py-8 text-center border-t border-red-700">
         <p>
-          &copy; {new Date().getFullYear()} ActionLoop by SMH Global Services.
-          All rights reserved.
+          &copy; {new Date().getFullYear()} ActionLoop. All rights reserved.
         </p>
         <p className="text-sm mt-2 text-gray-400">
           Crafted for high-performance agile teams.
