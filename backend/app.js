@@ -1,8 +1,12 @@
+const dns = require("dns");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+
+// Node on Windows may ignore system DNS for SRV lookups (mongodb+srv://)
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 // ★ ADDED: HTTP server + Socket.IO
 const http = require("http");
